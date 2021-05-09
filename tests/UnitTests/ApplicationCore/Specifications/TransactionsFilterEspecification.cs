@@ -1,11 +1,12 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace UnitTests.Specifications
+namespace UnitTests.ApplicationCore.Specifications
 {
     public class TransactionsFilterEspecification
     {
@@ -14,7 +15,7 @@ namespace UnitTests.Specifications
         [InlineData("T2008", 3)]
         public void MatchesExpectedNumberOfTransactions(string sku, int expectedCount)
         {
-            var spec = new ApplicationCore.Specifications.TransactionsFilterSpecification(sku);
+            var spec = new TransactionsFilterSpecification(sku);
 
             var result = GetTestTransactionsCollection()
                             .AsQueryable()
