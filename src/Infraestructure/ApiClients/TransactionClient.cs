@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
 {
-    public class ConversionClient : BaseHttpClient,IConversionClient<Conversion>
+    public class TransactionClient: BaseHttpClient, ITransactionClient<Transaction>
     {
-        public ConversionClient(IHttpClientFactory httpClientFactory): base(httpClientFactory)
-        {
+        public TransactionClient(IHttpClientFactory httpClientFactory): base(httpClientFactory)
+        { 
         }
 
-        public async Task<IEnumerable<Conversion>> GetAll()
-        {         
+        public async Task<IEnumerable<Transaction>> GetAll()
+        {
             try
             {
                 var result = await GetRequest("rates.json");
-                return JsonConvert.DeserializeObject<IEnumerable<Conversion>>(result);
+                return JsonConvert.DeserializeObject<IEnumerable<Transaction>>(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
