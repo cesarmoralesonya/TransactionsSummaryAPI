@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
 {
-    public class ConversionClient : BaseHttpClient,IConversionClient<Conversion>
+    public class ConversionClient : BaseHttpClient,IConversionClient<IWebServicesEntity>
     {
         public ConversionClient(IHttpClientFactory httpClientFactory): base(httpClientFactory)
         {
         }
 
-        public async Task<IEnumerable<Conversion>> GetAll()
+        public async virtual Task<IEnumerable<IWebServicesEntity>> GetAll()
         {         
             try
             {

@@ -1,3 +1,6 @@
+using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
+using Infraestructure.ApiClients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +23,9 @@ namespace Api
             {
                 c.BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/");
             });
+            services.AddSingleton<ITransactionClient<IWebServicesEntity>, TransactionClient>();
+            services.AddSingleton<IConversionClient<IWebServicesEntity>, ConversionClient>();
+            services.AddSingleton<IApiClient<IWebServicesEntity, IWebServicesEntity>, ApiClients>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

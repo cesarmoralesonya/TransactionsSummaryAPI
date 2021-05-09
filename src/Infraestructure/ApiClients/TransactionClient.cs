@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
 {
-    public class TransactionClient: BaseHttpClient, ITransactionClient<Transaction>
+    public class TransactionClient: BaseHttpClient, ITransactionClient<IWebServicesEntity>
     {
         public TransactionClient(IHttpClientFactory httpClientFactory): base(httpClientFactory)
         { 
         }
 
-        public async Task<IEnumerable<Transaction>> GetAll()
+        public async virtual Task<IEnumerable<IWebServicesEntity>> GetAll()
         {
             try
             {
