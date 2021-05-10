@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
 {
-    public class TransactionClient: BaseHttpClient, ITransactionClient<IWebServicesEntity>
+    public class TransactionClient : BaseHttpClient, ITransactionClient<IWebServicesEntity>
     {
-        public TransactionClient(IHttpClientFactory httpClientFactory): base(httpClientFactory)
-        { 
+        public TransactionClient(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        {
         }
 
         public async virtual Task<IEnumerable<IWebServicesEntity>> GetAll()

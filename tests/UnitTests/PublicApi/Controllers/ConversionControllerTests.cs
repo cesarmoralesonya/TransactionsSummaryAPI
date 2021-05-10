@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using PublicApi;
 using PublicApi.Controllers;
-using PublicApi.Dtos;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,7 +16,7 @@ namespace UnitTests.PublicApi.Controllers
         public static IMapper _mapper;
         public ConversionControllerTests()
         {
-            if(_mapper == null)
+            if (_mapper == null)
             {
                 var mappingConfig = new MapperConfiguration(mc =>
                 {
@@ -35,7 +32,7 @@ namespace UnitTests.PublicApi.Controllers
         {
             //Arrange
             var mockConversionClient = new Mock<IConversionClient<IWebServicesEntity>>();
-            mockConversionClient.Setup(client =>client.GetAll()).ReturnsAsync(GetConversions());                       
+            mockConversionClient.Setup(client => client.GetAll()).ReturnsAsync(GetConversions());
             var controller = new ConversionsController(mockConversionClient.Object, _mapper);
 
             //Act

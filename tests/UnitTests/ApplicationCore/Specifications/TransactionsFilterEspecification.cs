@@ -1,9 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Specifications;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests.ApplicationCore.Specifications
@@ -30,11 +28,11 @@ namespace UnitTests.ApplicationCore.Specifications
         {
             return new List<Transaction>()
             {
-                new Transaction("T2006", 10.0, "USD"),
-                new Transaction("T2006", 20.0, "EUR"),
-                new Transaction("T2008", 30.0, "USD"),
-                new Transaction("T2008", 5.0, "EUR"),
-                new Transaction("T2008", 8.0, "EUR"),
+                new Transaction() { Sku = "T2006", Amount =  10.0, Currency =  "USD"},
+                new Transaction() { Sku = "T2006", Amount = 20.0, Currency = "EUR"},
+                new Transaction() { Sku = "T2008", Amount = 30.0, Currency = "USD"},
+                new Transaction() { Sku = "T2008", Amount = 5.0, Currency = "EUR"},
+                new Transaction() { Sku = "T2008", Amount = 8.0, Currency = "EUR"},
             };
         }
     }

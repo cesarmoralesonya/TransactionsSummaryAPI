@@ -1,16 +1,14 @@
 ﻿using Newtonsoft.Json;
 using PublicApi.Dtos;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace FunctionalTests.PublicApi.Controllers
 {
     [Collection("SequentialGet")]
-    public class ConversionsControllerGet: IClassFixture<WebTestFixture>
+    public class ConversionsControllerGet : IClassFixture<WebTestFixture>
     {
         public ConversionsControllerGet(WebTestFixture factory)
         {

@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Entities
 {
-    public class Conversion: IWebServicesEntity
+    public class Conversion : IWebServicesEntity
     {
         public string From { get; set; }
 

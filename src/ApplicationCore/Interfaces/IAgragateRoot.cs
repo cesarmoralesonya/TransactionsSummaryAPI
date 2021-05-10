@@ -1,6 +1,6 @@
 ﻿namespace ApplicationCore.Interfaces
 {
-    public interface IWebServicesEntity
+    public interface IAgragateRoot
     {
     }
 }

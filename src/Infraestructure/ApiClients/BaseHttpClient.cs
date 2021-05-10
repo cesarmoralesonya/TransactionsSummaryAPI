@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
@@ -21,7 +19,7 @@ namespace Infraestructure.ApiClients
 
             var response = client.GetAsync(url).Result;
 
-            if(!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
                 throw new ArgumentException($"The path {url} gets the following status code: " + response.StatusCode);
 
             return await response.Content.ReadAsStringAsync();

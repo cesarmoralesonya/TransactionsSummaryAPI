@@ -2,19 +2,12 @@
 
 namespace ApplicationCore.Entities
 {
-    public class Transaction: IWebServicesEntity
+    public class Transaction : IWebServicesEntity
     {
-        public string Sku { get; private set; }
+        public string Sku { get; set; }
 
-        public double Amount { get; private set; }
+        public double Amount { get; set; }
 
-        public string Currency { get; private set; }
-
-        public Transaction(string sku, double amount, string currency)
-        {
-            Sku = sku;
-            Amount = amount;
-            Currency = currency;
-        }
+        public string Currency { get; set; }
     }
 }
