@@ -1,3 +1,4 @@
+using AutoMapper;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using Infraestructure.ApiClients;
@@ -10,8 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PublicApi;
 
-namespace Api
+namespace PublicApi
 {
     public class Startup
     {
@@ -25,7 +27,12 @@ namespace Api
             });
             services.AddSingleton<ITransactionClient<IWebServicesEntity>, TransactionClient>();
             services.AddSingleton<IConversionClient<IWebServicesEntity>, ConversionClient>();
-            services.AddSingleton<IApiClient<IWebServicesEntity, IWebServicesEntity>, ApiClients>();
+
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Transaction Summary", Version = "v1" }));
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,14 +43,21 @@ namespace Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                config.RoutePrefix = string.Empty;
+            });
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
