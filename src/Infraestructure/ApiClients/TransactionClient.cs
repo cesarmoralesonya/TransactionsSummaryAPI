@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
 {
-    public class TransactionClient : BaseHttpClient, ITransactionClient<IWebServicesEntity>
+    public class TransactionClient : BaseHttpClient, ITransactionClient<TransactionModel>
     {
         public TransactionClient(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
         {
         }
 
-        public async virtual Task<IEnumerable<IWebServicesEntity>> GetAll()
+        public async virtual Task<IEnumerable<TransactionModel>> GetAll()
         {
             try
             {
                 var result = await GetRequest("rates.json");
-                return JsonConvert.DeserializeObject<IEnumerable<Transaction>>(result);
+                return JsonConvert.DeserializeObject<IEnumerable<TransactionModel>>(result);
             }
             catch (Exception ex)
             {

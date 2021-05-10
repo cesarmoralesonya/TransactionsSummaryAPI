@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IConversionRepository : IAsyncRepository<ConversionDb>
+    public interface IConversionRepository : IRepository<ConversionEntity>
     {
     }
 }

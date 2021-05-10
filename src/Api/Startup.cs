@@ -1,8 +1,12 @@
+using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
 using AutoMapper;
 using Infraestructure.ApiClients;
+using Infraestructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -19,9 +23,13 @@ namespace PublicApi
             {
                 c.BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/");
             });
-            services.AddSingleton<ITransactionClient<IWebServicesEntity>, TransactionClient>();
-            services.AddSingleton<IConversionClient<IWebServicesEntity>, ConversionClient>();
 
+            services.AddDbContext<TransSummaryContext>(op => op.UseInMemoryDatabase("NotePadDB"));
+            services.AddSingleton<ITransactionClient<TransactionModel>, TransactionClient>();
+            services.AddSingleton<IConversionClient<ConversionModel>, ConversionClient>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ITransactionService, TransactionService>();
 
             services.AddAutoMapper(typeof(Startup).Assembly);
 

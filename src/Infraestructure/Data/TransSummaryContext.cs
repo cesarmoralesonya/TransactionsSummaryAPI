@@ -11,8 +11,8 @@ namespace Infraestructure.Data
         {
         }
 
-        public DbSet<ConversionDb> Conversions { get; set; }
-        public DbSet<TransactionDb> Transactions { get; set; }
+        public DbSet<ConversionEntity> Conversions { get; set; }
+        public DbSet<TransactionEntity> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infraestructure.Data.Config
 {
-    public class TransactionConfiguration : IEntityTypeConfiguration<TransactionDb>
+    public class TransactionConfiguration : IEntityTypeConfiguration<TransactionEntity>
     {
-        public void Configure(EntityTypeBuilder<TransactionDb> builder)
+        public void Configure(EntityTypeBuilder<TransactionEntity> builder)
         {
             builder.HasKey(c => c.Id);
             builder.ToTable("Transaction");

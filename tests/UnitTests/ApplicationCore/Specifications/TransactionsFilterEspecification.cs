@@ -24,15 +24,15 @@ namespace UnitTests.ApplicationCore.Specifications
 
         }
 
-        public List<Transaction> GetTestTransactionsCollection()
+        public List<TransactionModel> GetTestTransactionsCollection()
         {
-            return new List<Transaction>()
+            return new List<TransactionModel>()
             {
-                new Transaction() { Sku = "T2006", Amount =  10.0, Currency =  "USD"},
-                new Transaction() { Sku = "T2006", Amount = 20.0, Currency = "EUR"},
-                new Transaction() { Sku = "T2008", Amount = 30.0, Currency = "USD"},
-                new Transaction() { Sku = "T2008", Amount = 5.0, Currency = "EUR"},
-                new Transaction() { Sku = "T2008", Amount = 8.0, Currency = "EUR"},
+                new TransactionModel() { Sku = "T2006", Amount =  10.0, Currency =  "USD"},
+                new TransactionModel() { Sku = "T2006", Amount = 20.0, Currency = "EUR"},
+                new TransactionModel() { Sku = "T2008", Amount = 30.0, Currency = "USD"},
+                new TransactionModel() { Sku = "T2008", Amount = 5.0, Currency = "EUR"},
+                new TransactionModel() { Sku = "T2008", Amount = 8.0, Currency = "EUR"},
             };
         }
     }

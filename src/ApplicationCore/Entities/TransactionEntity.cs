@@ -3,20 +3,20 @@ using System;
 
 namespace ApplicationCore.Entities
 {
-    public class TransactionDb : BaseEntity, IAgragateRoot
+    public class TransactionEntity : BaseEntity, IAgragateRoot
     {
-        public string Sku { get; private set; }
+        public string Sku { get; set; }
 
-        public double Amount { get; private set; }
+        public double Amount { get; set; }
 
-        public string Currency { get; private set; }
+        public string Currency { get; set; }
 
-        public TransactionDb()
+        public TransactionEntity()
         {
             //Required by EF
         }
 
-        public TransactionDb(string sku, double amount, string currency)
+        public TransactionEntity(string sku, double amount, string currency)
         {
             Sku = sku ?? throw new ArgumentNullException(nameof(sku));
             Amount = amount;

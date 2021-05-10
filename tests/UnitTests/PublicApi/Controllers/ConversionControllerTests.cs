@@ -44,12 +44,12 @@ namespace UnitTests.PublicApi.Controllers
         }
 
         #region snippet_GetConversions
-        private List<Conversion> GetConversions()
+        private List<ConversionModel> GetConversions()
         {
-            return new List<Conversion>()
+            return new List<ConversionModel>()
             {
-                new Conversion() { From = "EUR", To = "USD", Rate = 1.359m },
-                new Conversion() { From = "CAD", To = "EUR", Rate = 0.732m }
+                new ConversionModel() { From = "EUR", To = "USD", Rate = 1.359m },
+                new ConversionModel() { From = "CAD", To = "EUR", Rate = 0.732m }
             };
         }
         #endregion

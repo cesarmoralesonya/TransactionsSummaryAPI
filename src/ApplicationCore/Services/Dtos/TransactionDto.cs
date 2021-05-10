@@ -1,8 +1,10 @@
-﻿using ApplicationCore.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace ApplicationCore.Entities
+namespace ApplicationCore.Services.Dtos
 {
-    public class Transaction : IWebServicesEntity
+    public class TransactionDto
     {
         public string Sku { get; set; }
 

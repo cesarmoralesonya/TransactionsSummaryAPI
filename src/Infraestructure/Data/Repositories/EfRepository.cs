@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Data.Repositories
 {
-    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity, IAgragateRoot
+    public class EfRepository<T> : IRepository<T> where T : BaseEntity, IAgragateRoot
     {
         protected readonly TransSummaryContext _dbContext;
 
@@ -20,10 +20,9 @@ namespace Infraestructure.Data.Repositories
             _dbContext = dbcontext ?? throw new ArgumentNullException(nameof(dbcontext));
         }
 
-        public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task<T> AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return entity;
         }
@@ -34,17 +33,14 @@ namespace Infraestructure.Data.Repositories
         }
 
 
-        public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
+        public void UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
+        public void DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
         }
 
         public async Task<IReadOnlyList<T>> ListAllAsync(CancellationToken cancellationToken = default)
@@ -56,6 +52,17 @@ namespace Infraestructure.Data.Repositories
         {
             var specificationResult = ApplySpecification(spec);
             return await specificationResult.ToListAsync(cancellationToken);
+        }
+
+        public async Task DeleteAllAsync()
+        {
+            var entities = await _dbContext.Set<T>().ToListAsync();
+            _dbContext.Set<T>().RemoveRange(entities);
+        }
+
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

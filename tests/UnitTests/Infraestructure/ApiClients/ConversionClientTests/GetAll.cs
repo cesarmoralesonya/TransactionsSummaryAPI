@@ -57,7 +57,7 @@ namespace UnitTests.Infraestructure.ApiClients.ConversionClientTests
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<List<Conversion>>(result);
+            Assert.IsType<List<ConversionModel>>(result);
         }
     }
 }
