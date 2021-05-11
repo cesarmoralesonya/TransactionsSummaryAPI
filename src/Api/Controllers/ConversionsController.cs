@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PublicApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/conversions")]
     [ApiController]
     public class ConversionsController : ControllerBase
     {
