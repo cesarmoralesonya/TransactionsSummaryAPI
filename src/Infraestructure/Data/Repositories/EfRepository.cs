@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Data.Repositories
 {
-    public class EfRepository<T> : IRepository<T> where T : BaseEntity, IAgragateRoot
+    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity, IAgragateRoot
     {
         protected readonly TransSummaryContext _dbContext;
 
@@ -20,10 +20,10 @@ namespace Infraestructure.Data.Repositories
             _dbContext = dbcontext ?? throw new ArgumentNullException(nameof(dbcontext));
         }
 
-        public async Task<T> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
         {
             await _dbContext.Set<T>().AddAsync(entity);
-
+            await _dbContext.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
@@ -33,14 +33,16 @@ namespace Infraestructure.Data.Repositories
         }
 
 
-        public void UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public void DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
         {
             _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IReadOnlyList<T>> ListAllAsync(CancellationToken cancellationToken = default)
@@ -54,15 +56,17 @@ namespace Infraestructure.Data.Repositories
             return await specificationResult.ToListAsync(cancellationToken);
         }
 
-        public async Task DeleteAllAsync()
+        public async Task DeleteAllAsync(CancellationToken cancellationToken = default)
         {
             var entities = await _dbContext.Set<T>().ToListAsync();
             _dbContext.Set<T>().RemoveRange(entities);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task AddRangeAsync(IEnumerable<T> entities)
+        public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
         {
             await _dbContext.Set<T>().AddRangeAsync(entities);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

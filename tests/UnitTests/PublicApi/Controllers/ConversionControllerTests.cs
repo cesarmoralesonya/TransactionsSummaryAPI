@@ -48,8 +48,8 @@ namespace UnitTests.PublicApi.Controllers
         {
             return new List<ConversionModel>()
             {
-                new ConversionModel() { From = "EUR", To = "USD", Rate = 1.359m },
-                new ConversionModel() { From = "CAD", To = "EUR", Rate = 0.732m }
+                new ConversionModel() { From = "EUR", To = "USD", Rate = 1.359 },
+                new ConversionModel() { From = "CAD", To = "EUR", Rate = 0.732 }
             };
         }
         #endregion

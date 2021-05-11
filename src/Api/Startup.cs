@@ -4,6 +4,7 @@ using ApplicationCore.Services;
 using AutoMapper;
 using Infraestructure.ApiClients;
 using Infraestructure.Data;
+using Infraestructure.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,14 +25,14 @@ namespace PublicApi
                 c.BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/");
             });
 
-            services.AddDbContext<TransSummaryContext>(op => op.UseInMemoryDatabase("NotePadDB"));
+            services.AddDbContext<TransSummaryContext>(op => op.UseInMemoryDatabase("TransactionSummaryDb"));
             services.AddSingleton<ITransactionClient<TransactionModel>, TransactionClient>();
             services.AddSingleton<IConversionClient<ConversionModel>, ConversionClient>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddTransient<ITransactionService, TransactionService>();
 
-            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Transaction Summary", Version = "v1" }));
             services.AddControllers();
@@ -53,7 +54,7 @@ namespace PublicApi
 
             app.UseSwaggerUI(config =>
             {
-                config.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "Transaction Summary V1");
                 config.RoutePrefix = string.Empty;
             });
 

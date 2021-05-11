@@ -18,7 +18,7 @@ namespace Infraestructure.ApiClients
         {
             try
             {
-                var result = await GetRequest("rates.json");
+                var result = await GetRequest("transactions.json");
                 return JsonConvert.DeserializeObject<IEnumerable<TransactionModel>>(result);
             }
             catch (Exception ex)

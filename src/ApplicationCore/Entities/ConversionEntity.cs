@@ -9,14 +9,14 @@ namespace ApplicationCore.Entities
 
         public string To { get; private set; }
 
-        public decimal Rate { get; private set; }
+        public double Rate { get; private set; }
 
         public ConversionEntity()
         {
             //Required by EF
         }
 
-        public ConversionEntity(string from, string to, decimal rate)
+        public ConversionEntity(string from, string to, double rate)
         {
             From = from ?? throw new ArgumentNullException(nameof(from));
             To = to ?? throw new ArgumentNullException(nameof(to));

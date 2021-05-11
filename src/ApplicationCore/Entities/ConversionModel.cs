@@ -8,6 +8,6 @@ namespace ApplicationCore.Entities
 
         public string To { get; set; }
 
-        public decimal Rate { get; set; }
+        public double Rate { get; set; }
     }
 }

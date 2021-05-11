@@ -12,14 +12,14 @@ namespace ApplicationCore.Services
     public class TransactionService : ITransactionService
     {
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly ITransactionClient<TransactionModel> _transactionClient;
 
 
-        public TransactionService(IMapper mapper, IUnitOfWork unitOfWork, ITransactionClient<TransactionModel> transactionClient)
+        public TransactionService(IMapper mapper, ITransactionRepository transactionRepository, ITransactionClient<TransactionModel> transactionClient)
         {
             _mapper  = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionClient = transactionClient ?? throw new ArgumentNullException(nameof(transactionClient));
         }
 
@@ -28,7 +28,7 @@ namespace ApplicationCore.Services
             var transactions = await _transactionClient.GetAll();
             if(transactions == null)
             {
-                var transPersisted = _unitOfWork.Transactions.ListAllAsync();
+                var transPersisted = await _transactionRepository.ListAllAsync();
                 return _mapper.Map<IEnumerable<TransactionDto>>(transPersisted);
             }
             else
@@ -41,9 +41,8 @@ namespace ApplicationCore.Services
         private async Task UpdateAllPersistedTransactions(IEnumerable<TransactionModel> transactions)
         {
             var transactionsEntity = _mapper.Map<IEnumerable<TransactionEntity>>(transactions);
-            await _unitOfWork.Transactions.DeleteAllAsync();
-            await _unitOfWork.Transactions.AddRangeAsync(transactionsEntity);
-            await _unitOfWork.CommitAsync();
+            await _transactionRepository.DeleteAllAsync();
+            await _transactionRepository.AddRangeAsync(transactionsEntity);
         }
     }
 }

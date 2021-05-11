@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces
 {
-    public interface ITransactionRepository : IRepository<TransactionEntity>
+    public interface ITransactionRepository : IAsyncRepository<TransactionEntity>
     {
     }
 }
