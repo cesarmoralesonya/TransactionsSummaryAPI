@@ -40,9 +40,9 @@ namespace ApplicationCore.Services
 
         private async Task UpdateAllPersistedTransactions(IEnumerable<TransactionModel> transactions)
         {
-            var transactionsEntity = _mapper.Map<IEnumerable<TransactionEntity>>(transactions);
+            var transactionEntities = _mapper.Map<IEnumerable<TransactionEntity>>(transactions);
             await _transactionRepository.DeleteAllAsync();
-            await _transactionRepository.AddRangeAsync(transactionsEntity);
+            await _transactionRepository.AddRangeAsync(transactionEntities);
         }
     }
 }

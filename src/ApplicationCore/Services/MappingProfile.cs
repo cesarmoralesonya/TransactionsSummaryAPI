@@ -24,6 +24,10 @@ namespace PublicApi
                 .ForMember(d => d.From, opt => opt.MapFrom(src => src.From))
                 .ForMember(d => d.Rate, opt => opt.MapFrom(src => src.Rate))
                 .ForMember(d => d.To, opt => opt.MapFrom(src => src.To));
+            CreateMap<ConversionModel, ConversionEntity>()
+                .ForMember(d => d.From, opt => opt.MapFrom(src => src.From))
+                .ForMember(d => d.Rate, opt => opt.MapFrom(src => src.Rate))
+                .ForMember(d => d.To, opt => opt.MapFrom(src => src.To));
         }
     }
 }

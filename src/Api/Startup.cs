@@ -30,7 +30,9 @@ namespace PublicApi
             services.AddSingleton<IConversionClient<ConversionModel>, ConversionClient>();
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IConversionRepository, ConversionRepository>();
             services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IConversionService, ConversionService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

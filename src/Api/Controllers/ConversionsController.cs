@@ -13,22 +13,18 @@ namespace PublicApi.Controllers
     [ApiController]
     public class ConversionsController : ControllerBase
     {
-        private readonly IConversionClient<IWebServicesEntity> _conversionClient;
-        private readonly IMapper _mapper;
+        private readonly IConversionService _conversionService;
 
-        public ConversionsController(IConversionClient<IWebServicesEntity> conversionClient, IMapper mapper)
+        public ConversionsController(IConversionService conversionService)
         {
-            _conversionClient = conversionClient ?? throw new ArgumentNullException(nameof(conversionClient));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetConversions()
+        public async Task<IActionResult> GetAllConversions()
         {
-            var items = await _conversionClient.GetAll();
-            var response = _mapper.Map<IEnumerable<ConversionDto>>(items);
-
-            return Ok(response);
+            var conversions = await _conversionService.GetAllConversionsAsync();
+            return Ok(conversions);
         }
     }
 }
