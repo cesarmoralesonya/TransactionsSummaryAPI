@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Entities;
+﻿using Domain.Entities;
 using Infraestructure.Data.Config;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;

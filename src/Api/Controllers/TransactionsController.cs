@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;

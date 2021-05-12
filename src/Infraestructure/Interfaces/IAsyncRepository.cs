@@ -1,12 +1,13 @@
-﻿using ApplicationCore.Entities;
-using Ardalis.Specification;
+﻿using Ardalis.Specification;
+using Domain.Entities;
+using Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Interfaces
+namespace Infraestructure.Interfaces
 {
-    public interface IAsyncRepository<T> where T : BaseEntity, IAgragateRoot
+    public interface IAsyncRepository<T> where T : EntityBase, IAgragateRoot
     {
         Task<T> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<T>> ListAllAsync(CancellationToken cancellationToken = default);

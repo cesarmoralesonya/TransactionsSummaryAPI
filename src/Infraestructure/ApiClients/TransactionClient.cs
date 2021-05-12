@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
+﻿using Infraestructure.Interfaces;
+using Infraestructure.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

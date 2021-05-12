@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Entities;
+﻿using Domain.Entities;
 using System.Linq;
 
 namespace Infraestructure.Data

@@ -1,14 +1,16 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
-using ApplicationCore.Services.Dtos;
-using ApplicationCore.Specifications;
+﻿using Application.Dtos;
+using Application.Interfaces;
 using AutoMapper;
+using Domain.Entities;
+using Domain.Specifications;
+using Infraestructure.Interfaces;
+using Infraestructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Services
+namespace Application.Services
 {
     public class TransactionService : ITransactionService
     {
@@ -79,7 +81,7 @@ namespace ApplicationCore.Services
 
         private static double GetCurrencyRateInEuro(string currency)
         {
-
+            return 1;
         }
 
         private async Task UpdateAllPersistedTransactions(IEnumerable<TransactionModel> transactions)

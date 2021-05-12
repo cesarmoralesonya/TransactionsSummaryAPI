@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using PublicApi.Dtos;
+﻿using Application.Dtos;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

@@ -1,9 +1,9 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Services.Dtos;
+﻿using Application.Dtos;
 using AutoMapper;
-using PublicApi.Dtos;
+using Domain.Entities;
+using Infraestructure.Models;
 
-namespace PublicApi
+namespace Application.Mappings
 {
     public class MappingProfile : Profile
     {

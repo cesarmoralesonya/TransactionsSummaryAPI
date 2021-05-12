@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ApplicationCore.Services.Dtos
+namespace Application.Dtos
 {
     public class TransactionsTotalDto
     {

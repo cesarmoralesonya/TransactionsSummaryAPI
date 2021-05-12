@@ -1,7 +1,8 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
-using Ardalis.Specification;
+﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using Domain.Entities;
+using Domain.Interfaces;
+using Infraestructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Data.Repositories
 {
-    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity, IAgragateRoot
+    public class EfRepository<T> : IAsyncRepository<T> where T : EntityBase, IAgragateRoot
     {
         protected readonly TransSummaryContext _dbContext;
 

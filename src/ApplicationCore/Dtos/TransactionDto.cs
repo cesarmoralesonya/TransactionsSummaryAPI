@@ -1,4 +1,4 @@
-﻿namespace ApplicationCore.Services.Dtos
+﻿namespace Application.Dtos
 {
     public class TransactionDto
     {

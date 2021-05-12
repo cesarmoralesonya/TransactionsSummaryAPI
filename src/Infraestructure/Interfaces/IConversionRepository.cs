@@ -1,6 +1,6 @@
-﻿using ApplicationCore.Entities;
+﻿using Domain.Entities;
 
-namespace ApplicationCore.Interfaces
+namespace Infraestructure.Interfaces
 {
     public interface IConversionRepository : IAsyncRepository<ConversionEntity>
     {

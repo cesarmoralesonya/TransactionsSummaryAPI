@@ -1,12 +1,14 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
 using AutoMapper;
-using PublicApi.Dtos;
+using Domain.Entities;
+using Infraestructure.Interfaces;
+using Infraestructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Services
+namespace Application.Services
 {
     public class ConversionService : IConversionService
     {

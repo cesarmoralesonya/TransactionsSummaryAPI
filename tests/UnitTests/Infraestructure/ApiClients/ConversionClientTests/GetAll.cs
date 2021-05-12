@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Entities;
-using Infraestructure.ApiClients;
+﻿using Infraestructure.ApiClients;
+using Infraestructure.Models;
 using Moq;
 using Moq.Protected;
 using System;

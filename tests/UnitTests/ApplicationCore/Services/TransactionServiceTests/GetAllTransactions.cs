@@ -1,11 +1,11 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
-using ApplicationCore.Services;
+﻿using Application.Mappings;
+using Application.Services;
 using AutoMapper;
+using Domain.Entities;
 using Infraestructure.ApiClients;
+using Infraestructure.Interfaces;
 using Moq;
 using Moq.Protected;
-using PublicApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,9 +1,9 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Domain.Interfaces;
 using System;
 
-namespace ApplicationCore.Entities
+namespace Domain.Entities
 {
-    public class ConversionEntity : BaseEntity, IAgragateRoot
+    public class ConversionEntity : EntityBase, IAgragateRoot
     {
         public string From { get; private set; }
 

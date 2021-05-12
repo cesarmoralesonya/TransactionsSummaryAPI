@@ -1,10 +1,11 @@
-using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
-using ApplicationCore.Services;
+using Application.Interfaces;
+using Application.Services;
 using AutoMapper;
 using Infraestructure.ApiClients;
 using Infraestructure.Data;
 using Infraestructure.Data.Repositories;
+using Infraestructure.Interfaces;
+using Infraestructure.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,8 @@ namespace PublicApi
             });
 
             services.AddDbContext<TransSummaryContext>(op => op.UseInMemoryDatabase("TransactionSummaryDb"));
-            services.AddSingleton<ITransactionClient<TransactionModel>, TransactionClient>();
-            services.AddSingleton<IConversionClient<ConversionModel>, ConversionClient>();
+            services.AddScoped<ITransactionClient<TransactionModel>, TransactionClient>();
+            services.AddScoped<IConversionClient<ConversionModel>, ConversionClient>();
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IConversionRepository, ConversionRepository>();

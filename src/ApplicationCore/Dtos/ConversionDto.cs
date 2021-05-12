@@ -1,4 +1,4 @@
-﻿namespace PublicApi.Dtos
+﻿namespace Application.Dtos
 {
     public class ConversionDto
     {

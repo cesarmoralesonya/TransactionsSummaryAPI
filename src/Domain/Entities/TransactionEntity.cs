@@ -1,9 +1,9 @@
-﻿using ApplicationCore.Interfaces;
+﻿using Domain.Interfaces;
 using System;
 
-namespace ApplicationCore.Entities
+namespace Domain.Entities
 {
-    public class TransactionEntity : BaseEntity, IAgragateRoot
+    public class TransactionEntity : EntityBase, IAgragateRoot
     {
         public string Sku { get; set; }
 

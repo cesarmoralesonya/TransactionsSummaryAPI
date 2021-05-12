@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Entities;
-using Ardalis.Specification;
+﻿using Ardalis.Specification;
+using Domain.Entities;
 
-namespace ApplicationCore.Specifications
+namespace Domain.Specifications
 {
     public class TransactionsFilterSpecification : Specification<TransactionEntity>
     {

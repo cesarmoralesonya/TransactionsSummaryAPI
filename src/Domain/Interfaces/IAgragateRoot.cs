@@ -1,4 +1,4 @@
-﻿namespace ApplicationCore.Interfaces
+﻿namespace Domain.Interfaces
 {
     public interface IAgragateRoot
     {
