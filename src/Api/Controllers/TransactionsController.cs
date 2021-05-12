@@ -1,9 +1,6 @@
 ﻿using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.Swagger.Annotations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +9,7 @@ namespace PublicApi.Controllers
     [Produces("application/json")]
     [Route("api/transactions")]
     [ApiController]
-    public class TransactionsController: ControllerBase
+    public class TransactionsController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
 
@@ -28,10 +25,11 @@ namespace PublicApi.Controllers
             return Ok(transactions);
         }
 
-        [HttpGet("total")]
-        public async Task<IActionResult> GetTransactionsBySku([FromQuery]string sku, CancellationToken cancellationToken)
+        [HttpGet("total-with-transactions")]
+        public async Task<IActionResult> GetTransactionsBySku([FromQuery] string sku, CancellationToken cancellationToken)
         {
-            return Ok();
+            var content = await _transactionService.GetTransactionsWithTotal(sku);
+            return Ok(content);
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ApplicationCore.Services.Dtos
+﻿namespace ApplicationCore.Services.Dtos
 {
     public class TransactionDto
     {

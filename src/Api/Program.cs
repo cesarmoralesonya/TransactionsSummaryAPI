@@ -27,7 +27,7 @@ namespace PublicApi
             using (var scope = scopeFactory.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<TransSummaryContext>();
-                if(context.Database.EnsureCreated())
+                if (context.Database.EnsureCreated())
                 {
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                     try
@@ -35,7 +35,7 @@ namespace PublicApi
                         TransSummaryContextSeed.Initialize(context);
                         logger.LogInformation("A database seeding was initialize");
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         logger.LogError(ex, "A db seeding error ocurred");
                     }

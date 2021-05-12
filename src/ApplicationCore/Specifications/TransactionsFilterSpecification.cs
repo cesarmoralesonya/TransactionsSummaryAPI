@@ -3,7 +3,7 @@ using Ardalis.Specification;
 
 namespace ApplicationCore.Specifications
 {
-    public class TransactionsFilterSpecification : Specification<TransactionModel>
+    public class TransactionsFilterSpecification : Specification<TransactionEntity>
     {
         public TransactionsFilterSpecification(string sku) : base()
         {

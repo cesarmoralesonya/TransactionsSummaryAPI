@@ -1,8 +1,5 @@
 ﻿using ApplicationCore.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Infraestructure.Data
 {
@@ -10,14 +7,14 @@ namespace Infraestructure.Data
     {
         public static void Initialize(TransSummaryContext context)
         {
-            if(!context.Conversions.Any())
+            if (!context.Conversions.Any())
             {
                 context.Conversions.AddRange(
                     new ConversionEntity("EUR", "USD", 1.359),
                     new ConversionEntity("CAD", "EUR", 0.732)
                     );
             }
-            if(!context.Transactions.Any())
+            if (!context.Transactions.Any())
             {
                 context.Transactions.AddRange(
                     new TransactionEntity("T2006", 10.00, "USD"),

@@ -1,9 +1,6 @@
 ﻿using ApplicationCore.Interfaces;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PublicApi.Dtos;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PublicApi.Controllers

@@ -15,12 +15,15 @@ namespace Infraestructure.ApiClients
 
         public async Task<string> GetRequest(string url)
         {
-            var client = _httpClientFactory.CreateClient("quiet-stone-2094");
+            HttpResponseMessage response;
+            using (var client = _httpClientFactory.CreateClient("quiet-stone-2094"))
+            {
+                response = client.GetAsync(url).Result;
 
-            var response = client.GetAsync(url).Result;
+                if (!response.IsSuccessStatusCode)
+                    throw new ArgumentException($"The path {url} gets the following status code: " + response.StatusCode);
 
-            if (!response.IsSuccessStatusCode)
-                throw new ArgumentException($"The path {url} gets the following status code: " + response.StatusCode);
+            }
 
             return await response.Content.ReadAsStringAsync();
         }

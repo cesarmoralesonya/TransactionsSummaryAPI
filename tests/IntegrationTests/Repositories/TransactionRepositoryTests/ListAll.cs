@@ -1,12 +1,8 @@
 ﻿using Infraestructure.Data;
 using Infraestructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace IntegrationTests.Repositories.TransactionRepositoryTests
 {

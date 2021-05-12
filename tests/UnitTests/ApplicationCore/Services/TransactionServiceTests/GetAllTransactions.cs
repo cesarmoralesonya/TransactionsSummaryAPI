@@ -3,7 +3,6 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using AutoMapper;
 using Infraestructure.ApiClients;
-using Infraestructure.Data;
 using Moq;
 using Moq.Protected;
 using PublicApi;
@@ -12,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -24,7 +22,7 @@ namespace UnitTests.ApplicationCore.Services.TransactionServiceTests
         private static IMapper _mapper;
         public GetAllTransactions()
         {
-            if(_mapper == null)
+            if (_mapper == null)
             {
                 var mappingConfig = new MapperConfiguration(mc =>
                 {
