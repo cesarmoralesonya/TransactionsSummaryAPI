@@ -1,5 +1,7 @@
 ﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,23 +13,44 @@ namespace PublicApi.Controllers
     [ApiController]
     public class TransactionsController : ControllerBase
     {
+        private readonly ILogger _logger;
         private readonly ITransactionService _transactionService;
 
-        public TransactionsController(ITransactionService transactionService)
+        public TransactionsController(ITransactionService transactionService, ILogger<TransactionsController> logger)
         {
             _transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTransactions()
+        public async Task<IActionResult> GetAllTransactions(CancellationToken cancellationToken)
         {
-            var transactions = await _transactionService.GetAllTransactionsAsync();
-            return Ok(transactions);
+            try
+            {
+                var transactions = await _transactionService.GetAllTransactionsAsync(cancellationToken);
+                if (transactions == null) return NotFound();
+                return Ok(transactions);
+            }
+            catch(Exception ex)
+            {
+                var menssage = "Error message: " + ex.Message;
+
+                if (ex.InnerException != null)
+                {
+                    menssage +=" Inner exception: " + ex.InnerException.Message;
+                }
+
+                menssage += " Stack trace: " + ex.StackTrace;
+                _logger.LogCritical(menssage);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet("total-with-transactions")]
         public async Task<IActionResult> GetTransactionsBySku([FromQuery] string sku, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(sku))
+                throw new ArgumentNullException($"{nameof(sku)} can not be null or empty");
             var content = await _transactionService.GetTransactionsWithTotal(sku);
             return Ok(content);
         }

@@ -5,9 +5,11 @@ using Domain.Entities;
 using Domain.Specifications;
 using Infraestructure.Interfaces;
 using Infraestructure.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Services
@@ -17,26 +19,34 @@ namespace Application.Services
         private readonly IMapper _mapper;
         private readonly ITransactionRepository _transactionRepository;
         private readonly ITransactionClient<TransactionModel> _transactionClient;
+        private readonly ILogger _logger;
 
 
-        public TransactionService(IMapper mapper, ITransactionRepository transactionRepository, ITransactionClient<TransactionModel> transactionClient)
+        public TransactionService(IMapper mapper,
+                                    ITransactionRepository transactionRepository,
+                                    ITransactionClient<TransactionModel> transactionClient,
+                                    ILogger<TransactionService> logger)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionClient = transactionClient ?? throw new ArgumentNullException(nameof(transactionClient));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync()
+        public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync(CancellationToken cancellationToken = default)
         {
-            var transactions = await _transactionClient.GetAll();
+            var transactions = await _transactionClient.GetAllAsync(cancellationToken);
             if (transactions == null)
             {
-                var transPersisted = await _transactionRepository.ListAllAsync();
+                _logger.LogWarning($"Client {nameof(_transactionClient)} unavailable return {nameof(transactions)}");
+                var transPersisted = await _transactionRepository.ListAllAsync(cancellationToken);
+                if(transPersisted == null)
+                    throw new ArgumentException($"{nameof(transPersisted)} is null. Can not return data");
                 return _mapper.Map<IEnumerable<TransactionDto>>(transPersisted);
             }
             else
             {
-                //await UpdateAllPersistedTransactions(transactions);
+                await UpdatePersistedTransactions(transactions);
                 return _mapper.Map<IEnumerable<TransactionDto>>(transactions);
             }
         }
@@ -52,43 +62,11 @@ namespace Application.Services
             };
         }
 
-        private static double GetExchangeRate(string from, string to, double amount = 1)
-        {
-            if (from == null || to == null) return 0;
-
-            if (from.ToLower() == "eur" && to.ToLower() == "eur")
-                return amount;
-
-            // First Get the exchange rate of both currencies in euro
-            double toRate = GetCurrencyRateInEuro(to);
-            double fromRate = GetCurrencyRateInEuro(from);
-
-            // Convert Between Euro to Other Currency
-            if (from.ToLower() == "eur")
-            {
-                return (amount * toRate);
-            }
-            else if (to.ToLower() == "eur")
-            {
-                return (amount / fromRate);
-            }
-            else
-            {
-                // Calculate non EURO exchange rates From A to B
-                return (amount * toRate) / fromRate;
-            }
-        }
-
-        private static double GetCurrencyRateInEuro(string currency)
-        {
-            return 1;
-        }
-
-        private async Task UpdateAllPersistedTransactions(IEnumerable<TransactionModel> transactions)
+        private async Task UpdatePersistedTransactions(IEnumerable<TransactionModel> transactions, CancellationToken cancellationToken = default)
         {
             var transactionEntities = _mapper.Map<IEnumerable<TransactionEntity>>(transactions);
-            await _transactionRepository.DeleteAllAsync();
-            await _transactionRepository.AddRangeAsync(transactionEntities);
+            await _transactionRepository.DeleteAllAsync(cancellationToken);
+            await _transactionRepository.AddRangeAsync(transactionEntities, cancellationToken);
         }
     }
 }

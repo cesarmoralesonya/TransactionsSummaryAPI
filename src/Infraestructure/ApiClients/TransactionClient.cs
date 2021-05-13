@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace Infraestructure.ApiClients
 {
@@ -20,11 +21,11 @@ namespace Infraestructure.ApiClients
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async virtual Task<IEnumerable<TransactionModel>> GetAll()
+        public async virtual Task<IEnumerable<TransactionModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                return await GetRequest<IEnumerable<TransactionModel>>("transactions.json");
+                return await GetRequestAsync<IEnumerable<TransactionModel>>("transactions.json", cancellationToken);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,9 @@
 ﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PublicApi.Controllers
@@ -10,18 +13,37 @@ namespace PublicApi.Controllers
     [ApiController]
     public class ConversionsController : ControllerBase
     {
+        private readonly ILogger _logger;
         private readonly IConversionService _conversionService;
 
-        public ConversionsController(IConversionService conversionService)
+        public ConversionsController(IConversionService conversionService, ILogger<ConversionsController> logger)
         {
             _conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllConversions()
+        public async Task<IActionResult> GetAllConversions(CancellationToken cancellationToken)
         {
-            var conversions = await _conversionService.GetAllConversionsAsync();
-            return Ok(conversions);
+            try
+            {
+                var conversions = await _conversionService.GetAllConversionsAsync(cancellationToken);
+                if (conversions == null) return NotFound();
+                return Ok(conversions);
+            }
+            catch(Exception ex)
+            {
+                var menssage = "Error message: " + ex.Message;
+
+                if (ex.InnerException != null)
+                {
+                    menssage += " Inner exception: " + ex.InnerException.Message;
+                }
+
+                menssage += " Stack trace: " + ex.StackTrace;
+                _logger.LogCritical(menssage);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
@@ -18,7 +18,7 @@ namespace Infraestructure.ApiClients
 
         }
 
-        public async Task<T> GetRequest<T>(string url)
+        public async Task<T> GetRequestAsync<T>(string url, CancellationToken cancellationToken = default)
         {
             using var client = _httpClientFactory.CreateClient("quiet-stone-2094");
             using var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -37,7 +37,7 @@ namespace Infraestructure.ApiClients
                     Encoder = JavaScriptEncoder.Default,  
                     NumberHandling = JsonNumberHandling.AllowReadingFromString
                 };
-                return await JsonSerializer.DeserializeAsync<T>(stream, options);
+                return await JsonSerializer.DeserializeAsync<T>(stream, options, cancellationToken);
             }
         }
     }

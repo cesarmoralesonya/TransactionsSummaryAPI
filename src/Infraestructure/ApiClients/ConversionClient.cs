@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
@@ -20,11 +21,11 @@ namespace Infraestructure.ApiClients
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async virtual Task<IEnumerable<ConversionModel>> GetAll()
+        public async virtual Task<IEnumerable<ConversionModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                 return  await GetRequest<IEnumerable<ConversionModel>>("rates.json");
+                 return  await GetRequestAsync<IEnumerable<ConversionModel>>("rates.json", cancellationToken);
             }
             catch (Exception ex)
             {
