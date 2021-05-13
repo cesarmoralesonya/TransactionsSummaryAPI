@@ -22,7 +22,16 @@ namespace PublicApi.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        /// <summary>
+        /// Get all Conversions
+        /// </summary>
+        /// <response code="200">Return a list of conversions</response>
+        /// <response code="404">Not fount conversions</response>
+        /// <response code="500">Internal server error</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllConversions(CancellationToken cancellationToken)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using Infraestructure.Interfaces;
 using Infraestructure.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -15,17 +16,21 @@ namespace Infraestructure.ApiClients
     public class ConversionClient : BaseHttpClient, IConversionClient<ConversionModel>
     {
         private readonly ILogger _logger;
+        private readonly IConfiguration _configuration;
         public ConversionClient(IHttpClientFactory httpClientFactory,
-                                    ILogger<ConversionClient> logger) : base(httpClientFactory)
+                                    ILogger<ConversionClient> logger,
+                                    IConfiguration config) : base(httpClientFactory, config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _configuration = config;
         }
 
         public async virtual Task<IEnumerable<ConversionModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                 return  await GetRequestAsync<IEnumerable<ConversionModel>>("rates.json", cancellationToken);
+                var endpoint = _configuration.GetSection("ConfigApp").GetSection("ConversionsEndpoint").Value;
+                return  await GetRequestAsync<IEnumerable<ConversionModel>>(endpoint, cancellationToken);
             }
             catch (Exception ex)
             {

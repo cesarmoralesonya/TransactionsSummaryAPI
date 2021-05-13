@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PublicApi</name>
+    </assembly>
+    <members>
+        <member name="M:PublicApi.Controllers.ConversionsController.GetAllConversions(System.Threading.CancellationToken)">
+            <summary>
+            Get all Conversions
+            </summary>
+            <response code="200">Return a list of conversions</response>
+            <response code="404">Not fount conversions</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:PublicApi.Controllers.TransactionsController.GetAllTransactions(System.Threading.CancellationToken)">
+            <summary>
+            Get all Transactions
+            </summary>
+            <response code="200">Return a list of transactions</response>
+            <response code="404">Not fount transactions</response>
+            <response code="500">Internal server error</response>
+        </member>
+    </members>
+</doc>

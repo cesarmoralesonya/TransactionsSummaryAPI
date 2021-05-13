@@ -22,6 +22,17 @@ namespace PublicApi.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+
+        /// <summary>
+        /// Get all Transactions
+        /// </summary>
+        /// <response code="200">Return a list of transactions</response>
+        /// <response code="404">Not fount transactions</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<IActionResult> GetAllTransactions(CancellationToken cancellationToken)
         {
