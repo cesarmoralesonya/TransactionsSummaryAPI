@@ -39,6 +39,7 @@ namespace PublicApi
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Transaction Summary", Version = "v1" }));
             services.AddControllers();
+            services.AddLogging();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

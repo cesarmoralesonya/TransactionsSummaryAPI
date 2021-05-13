@@ -1,5 +1,5 @@
-﻿using Domain.Interfaces;
-using Infraestructure.Interfaces;
+﻿using Infraestructure.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace Infraestructure.Models
 {

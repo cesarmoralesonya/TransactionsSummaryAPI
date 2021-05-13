@@ -36,7 +36,7 @@ namespace Application.Services
             }
             else
             {
-                await UpdateAllPersistedTransactions(transactions);
+                //await UpdateAllPersistedTransactions(transactions);
                 return _mapper.Map<IEnumerable<TransactionDto>>(transactions);
             }
         }
