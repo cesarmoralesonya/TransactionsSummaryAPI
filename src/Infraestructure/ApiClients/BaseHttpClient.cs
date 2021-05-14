@@ -30,7 +30,7 @@ namespace Infraestructure.ApiClients
             {
                 if (!response.IsSuccessStatusCode)
                     throw new ArgumentException($"The path {url} gets the following status code: " + response.StatusCode);
-                var stream = await response.Content.ReadAsStreamAsync();
+                using var stream = await response.Content.ReadAsStreamAsync();
                 
                 if (!stream.CanRead)
                     throw new ArgumentException("It is not possible read the stream");
