@@ -24,6 +24,8 @@ namespace Application.Services
 
         private Dictionary<string, List<string>> _graph;
 
+        private List<RateDto> _rates;
+
 
         private readonly ILogger _logger;
 
@@ -64,9 +66,22 @@ namespace Application.Services
 
             if(transactionsBySkyDto.Any())
             {
+                var ratesApi = await _rateClient.GetAllAsync(cancellationToken);
+                if (ratesApi == null)
+                {
+                    var ratesBackup = await _rateRepository.ListAllAsync();
+                    _rates = _mapper.Map<List<RateDto>>(ratesBackup);
+                }
+                else
+                {
+                    _rates = _mapper.Map<List<RateDto>>(ratesApi);
+                }
+
+                if (!_rates.Any())
+                    throw (new ArgumentException("Imposible do the Exchange because rates is empty"));
                 foreach (var transaction in transactionsBySkyDto)
                 {
-                    transaction.Amount = await ExchangeToEur(transaction.Currency, transaction.Amount);
+                    transaction.Amount = ExchangeToEur(transaction.Currency, transaction.Amount);
                     transaction.Currency = "EUR";
                 }
 
@@ -86,36 +101,18 @@ namespace Application.Services
             }
         }
 
-        private async Task<decimal> ExchangeToEur(string currency, decimal amount, CancellationToken cancellationToken = default)
+        private decimal ExchangeToEur(string currency, decimal amount, CancellationToken cancellationToken = default)
         {
-            //Get rates:
-            var rates = new List<RateDto>();
-            var ratesApi = await _rateClient.GetAllAsync(cancellationToken);
-            if(ratesApi == null)
-            {
-                var ratesBackup = await _rateRepository.ListAllAsync();
-                rates = _mapper.Map<List<RateDto>>(ratesBackup);
-            }
-            else
-            {
-                rates = _mapper.Map<List<RateDto>>(ratesApi);
-            }
-
-            if (!rates.Any())
-                throw (new ArgumentException("Imposible do the Exchange because rates is empty"));
-
-            //Exchange
-
-            ConstructGraph(rates);
-            return amount * ExchangeRate(currency, "EUR", rates);
+            ConstructGraph();
+            return amount * ExchangeRate(currency, "EUR");
         }
 
-        private void ConstructGraph(List<RateDto> rates)
+        private void ConstructGraph()
         {
             if (_graph == null)
             {
                 _graph = new Dictionary<string, List<string>>();
-                foreach (var rate in rates)
+                foreach (var rate in _rates)
                 {
                     if (!_graph.ContainsKey(rate.From))
                         _graph[rate.From] = new List<string>();
@@ -128,44 +125,44 @@ namespace Application.Services
             }
         }
 
-        private decimal ExchangeRate(string baseCode, string targetCode, List<RateDto> rates)
+        private decimal ExchangeRate(string baseCode, string targetCode)
         {
             if (_graph[baseCode].Contains(targetCode))
             {
                 // found the target code
-                return GetKnownRate(baseCode, targetCode, rates);
+                return GetKnownRate(baseCode, targetCode);
             }
             else
             {
                 foreach (var code in _graph[baseCode])
                 {
                     // determine if code can be converted to targetCode
-                    decimal rate = ExchangeRate(code, targetCode, rates);
+                    decimal rate = ExchangeRate(code, targetCode);
                     if (rate != 0) // if it can than combine with returned rate
-                        return rate*GetKnownRate(baseCode, code, rates);
+                        return rate*GetKnownRate(baseCode, code);
                 }
             }
 
             return 0;
         }
-        private decimal GetKnownRate(string baseCode, string targetCode, List<RateDto> rates)
+        private decimal GetKnownRate(string baseCode, string targetCode)
         {
             //Calculate not knowledge rates
-            for (int i = 0; i < rates.Count; i++)
+            for (int i = 0; i < _rates.Count; i++)
             {
-                RateDto rateDto = rates[i];
-                for (int j = i + 1; j < rates.Count; j++)
+                RateDto rateFile = _rates[i];
+                for (int j = i + 1; j < _rates.Count; j++)
                 {
-                    RateDto rate2 = rates[j];
-                    RateDto cross = CanCross(rateDto, rate2);
+                    RateDto rateRow = _rates[j];
+                    RateDto cross = CrossRate(rateFile, rateRow);
                     if (cross != null)
-                        if (rates.FirstOrDefault(r => r.From.Equals(cross.From) && r.To.Equals(cross.To)) == null)
-                            rates.Add(cross);
+                        if (_rates.FirstOrDefault(r => r.From.Equals(cross.From) && r.To.Equals(cross.To)) == null)
+                            _rates.Add(cross);
                 }
             }
 
-            var rate = rates.SingleOrDefault(fr => fr.From == baseCode && fr.To == targetCode);
-            var rate_i = rates.SingleOrDefault(fr => fr.From == targetCode && fr.To == baseCode);
+            var rate = _rates.SingleOrDefault(fr => fr.From == baseCode && fr.To == targetCode);
+            var rate_i = _rates.SingleOrDefault(fr => fr.From == targetCode && fr.To == baseCode);
             
             if (rate == null)
             {
@@ -174,7 +171,7 @@ namespace Application.Services
             return rate.Rate;
         }
 
-        public static RateDto CanCross(RateDto r1, RateDto r2)
+        public static RateDto CrossRate(RateDto r1, RateDto r2)
         {
             RateDto nr = null;
 
