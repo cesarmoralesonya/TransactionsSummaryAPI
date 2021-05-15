@@ -10,15 +10,15 @@ namespace Infraestructure.Data
             if (!context.rates.Any())
             {
                 context.rates.AddRange(
-                    new RateEntity("EUR", "USD", 1.359),
-                    new RateEntity("CAD", "EUR", 0.732)
+                    new RateEntity("EUR", "USD", 1.359M),
+                    new RateEntity("CAD", "EUR", 0.732M)
                     );
             }
             if (!context.Transactions.Any())
             {
                 context.Transactions.AddRange(
-                    new TransactionEntity("T2006", 10.00, "USD"),
-                    new TransactionEntity("R2008", 17.95, "USD")
+                    new TransactionEntity("T2006", 10.00M, "USD"),
+                    new TransactionEntity("R2008", 17.95M, "USD")
                     );
             }
             context.SaveChanges();

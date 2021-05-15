@@ -6,6 +6,6 @@ namespace Application.Dtos
     {
         public List<TransactionDto> Transactions { get; set; } = new List<TransactionDto>();
 
-        public double Total { get; set; }
+        public decimal Total { get; set; }
     }
 }

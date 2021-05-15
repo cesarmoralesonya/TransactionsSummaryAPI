@@ -7,7 +7,7 @@ namespace Domain.Entities
     {
         public string Sku { get; set; }
 
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public string Currency { get; set; }
 
@@ -16,7 +16,7 @@ namespace Domain.Entities
             //Required by EF
         }
 
-        public TransactionEntity(string sku, double amount, string currency)
+        public TransactionEntity(string sku, decimal amount, string currency)
         {
             Sku = sku ?? throw new ArgumentNullException(nameof(sku));
             Amount = amount;

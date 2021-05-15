@@ -11,6 +11,6 @@ namespace Infraestructure.Models
         public string To { get; set; }
 
         [JsonProperty("rate")]
-        public double Rate { get; set; }
+        public decimal Rate { get; set; }
     }
 }

@@ -38,18 +38,17 @@ namespace UnitTests.Application.Services.TransactionServiceTests
                 });
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
-
-                string projectPath = AppDomain
-                                        .CurrentDomain
-                                        .BaseDirectory.Split(new String[] { @"bin\" }, StringSplitOptions.None)[0];
-                configuration = new ConfigurationBuilder()
-                                    .SetBasePath(projectPath)
-                                    .AddJsonFile("appsettings.json")
-                                    .Build();
-
-                loggerMockClient = new Mock<ILogger<TransactionClient>>();
-                loggerMockService = new Mock<ILogger<TransactionService>>();
             }
+            string projectPath = AppDomain
+                                       .CurrentDomain
+                                       .BaseDirectory.Split(new String[] { @"bin\" }, StringSplitOptions.None)[0];
+            configuration = new ConfigurationBuilder()
+                                .SetBasePath(projectPath)
+                                .AddJsonFile("appsettings.json")
+                                .Build();
+
+            loggerMockClient = new Mock<ILogger<TransactionClient>>();
+            loggerMockService = new Mock<ILogger<TransactionService>>();
         }
 
         [Fact]
@@ -90,8 +89,10 @@ namespace UnitTests.Application.Services.TransactionServiceTests
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.Accepted, Content = content });
+            
             var client = new HttpClient(mockHttpMessageHandler.Object) { BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/") };
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
+            
             var transactionClient = new TransactionClient(mockFactory.Object, loggerMockClient.Object, configuration);
 
             var mockRepo = new Mock<ITransactionRepository>();
@@ -114,11 +115,11 @@ namespace UnitTests.Application.Services.TransactionServiceTests
         {
             return new List<TransactionEntity>()
             {
-                new TransactionEntity() { Sku = "T2006", Amount =  10.0, Currency =  "USD"},
-                new TransactionEntity() { Sku = "T2006", Amount = 20.0, Currency = "EUR"},
-                new TransactionEntity() { Sku = "T2008", Amount = 30.0, Currency = "USD"},
-                new TransactionEntity() { Sku = "T2008", Amount = 5.0, Currency = "EUR"},
-                new TransactionEntity() { Sku = "T2008", Amount = 8.0, Currency = "EUR"},
+                new TransactionEntity() { Sku = "T2006", Amount =  10.0M, Currency =  "USD"},
+                new TransactionEntity() { Sku = "T2006", Amount = 20.0M, Currency = "EUR"},
+                new TransactionEntity() { Sku = "T2008", Amount = 30.0M, Currency = "USD"},
+                new TransactionEntity() { Sku = "T2008", Amount = 5.0M, Currency = "EUR"},
+                new TransactionEntity() { Sku = "T2008", Amount = 8.0M, Currency = "EUR"},
             };
         }
         #endregion

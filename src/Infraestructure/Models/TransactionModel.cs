@@ -8,7 +8,7 @@ namespace Infraestructure.Models
         public string Sku { get; set; }
 
         [JsonProperty("amount")]
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [JsonProperty("currency")]
         public string Currency { get; set; }

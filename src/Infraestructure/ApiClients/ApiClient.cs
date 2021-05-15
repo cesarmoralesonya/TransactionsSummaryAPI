@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace Infraestructure.ApiClients
         public async Task<string> GetRequestAsync(string url, CancellationToken cancellationToken = default)
         {
             var clientName = _configuration.GetSection("ConfigApp").GetSection("QuietStoneClient").Value;
-            using var client = _httpClientFactory.CreateClient(clientName);
+            var client = _httpClientFactory.CreateClient(clientName);
             var response = client.GetAsync(url).Result;
             if (!response.IsSuccessStatusCode)
                 throw new ArgumentException($"The path {url} gets the following status code: " + response.StatusCode);

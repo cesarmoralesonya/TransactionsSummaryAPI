@@ -38,10 +38,10 @@ namespace Application.Services
             if (transactions == null)
             {
                 _logger.LogWarning($"Client {nameof(_transactionClient)} unavailable return {nameof(transactions)}");
-                var transPersisted = await _transactionRepository.ListAllAsync(cancellationToken);
-                if (transPersisted == null)
-                    throw new ArgumentException($"{nameof(transPersisted)} is null. Can not return data");
-                return _mapper.Map<IEnumerable<TransactionDto>>(transPersisted);
+                var transBackup = await _transactionRepository.ListAllAsync(cancellationToken);
+                if (transBackup == null)
+                    throw new ArgumentException($"{nameof(transBackup)} is null. Can not return data");
+                return _mapper.Map<IEnumerable<TransactionDto>>(transBackup);
             }
             else
             {

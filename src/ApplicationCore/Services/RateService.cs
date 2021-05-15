@@ -35,10 +35,10 @@ namespace Application.Services
             if (rates == null)
             {
                 _logger.LogWarning($"Client {nameof(_rateClient)} unavailable return {nameof(rates)}");
-                var convPersisted = await _rateRepository.ListAllAsync(cancellationToken);
-                if (convPersisted == null)
-                    throw new ArgumentException($"{nameof(convPersisted)} is null. Can not return data");
-                return _mapper.Map<IEnumerable<RateDto>>(convPersisted);
+                var rateBackup = await _rateRepository.ListAllAsync(cancellationToken);
+                if (rateBackup == null)
+                    throw new ArgumentException($"{nameof(rateBackup)} is null. Can not return data");
+                return _mapper.Map<IEnumerable<RateDto>>(rateBackup);
             }
             else
             {

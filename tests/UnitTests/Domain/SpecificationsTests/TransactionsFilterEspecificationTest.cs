@@ -28,11 +28,11 @@ namespace UnitTests.Domain.Specifications
         {
             return new List<TransactionEntity>()
             {
-                new TransactionEntity() { Sku = "T2006", Amount =  10.0, Currency =  "USD"},
-                new TransactionEntity() { Sku = "T2006", Amount = 20.0, Currency = "EUR"},
-                new TransactionEntity() { Sku = "T2008", Amount = 30.0, Currency = "USD"},
-                new TransactionEntity() { Sku = "T2008", Amount = 5.0, Currency = "EUR"},
-                new TransactionEntity() { Sku = "T2008", Amount = 8.0, Currency = "EUR"},
+                new TransactionEntity() { Sku = "T2006", Amount =  10.0M, Currency =  "USD"},
+                new TransactionEntity() { Sku = "T2006", Amount = 20.0M, Currency = "EUR"},
+                new TransactionEntity() { Sku = "T2008", Amount = 30.0M, Currency = "USD"},
+                new TransactionEntity() { Sku = "T2008", Amount = 5.0M, Currency = "EUR"},
+                new TransactionEntity() { Sku = "T2008", Amount = 8.0M, Currency = "EUR"},
             };
         }
     }
