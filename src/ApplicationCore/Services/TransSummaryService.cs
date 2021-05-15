@@ -22,6 +22,9 @@ namespace Application.Services
         private readonly ITransactionClient _transactionClient;
         private readonly ITransactionRepository _transactionRepository;
 
+        private Dictionary<string, List<string>> _graph;
+
+
         private readonly ILogger _logger;
 
         public TransSummaryService(IMapper mapper,
@@ -83,7 +86,7 @@ namespace Application.Services
             }
         }
 
-        private async Task<decimal> ExchangeToEur(string from, decimal amount, CancellationToken cancellationToken = default)
+        private async Task<decimal> ExchangeToEur(string currency, decimal amount, CancellationToken cancellationToken = default)
         {
             //Get rates:
             var rates = new List<RateDto>();
@@ -102,31 +105,123 @@ namespace Application.Services
                 throw (new ArgumentException("Imposible do the Exchange because rates is empty"));
 
             //Exchange
-            if (from.ToLower() == "eur") return amount;
-            var ratesFromEur = rates.Where(rate => rate.From.ToLower() == "eur").ToList();
-            if (ratesFromEur.Exists(rate => rate.To.ToLower() == from.ToLower()))
+
+            ConstructGraph(rates);
+            return amount * ExchangeRate(currency, "EUR", rates);
+        }
+
+        private void ConstructGraph(List<RateDto> rates)
+        {
+            if (_graph == null)
             {
-                var rateExchange = ratesFromEur
-                                    .Where(rateFromEur => rateFromEur.To.ToLower() == from.ToLower())
-                                    .Select(rateFromEur => rateFromEur.Rate)
-                                    .FirstOrDefault();
-                return amount / rateExchange;
+                _graph = new Dictionary<string, List<string>>();
+                foreach (var rate in rates)
+                {
+                    if (!_graph.ContainsKey(rate.From))
+                        _graph[rate.From] = new List<string>();
+                    if (!_graph.ContainsKey(rate.To))
+                        _graph[rate.To] = new List<string>();
+
+                    _graph[rate.From].Add(rate.To);
+                    _graph[rate.To].Add(rate.From);
+                }
+            }
+        }
+
+        private decimal ExchangeRate(string baseCode, string targetCode, List<RateDto> rates)
+        {
+            if (_graph[baseCode].Contains(targetCode))
+            {
+                // found the target code
+                return GetKnownRate(baseCode, targetCode, rates);
             }
             else
             {
-                var ratesFromOther = rates.Where(rate => rate.From.ToLower() == from.ToLower()).ToList();
-                var rateFromMatch = ratesFromEur
-                                    .Where(rateFromEur => 
-                                            ratesFromOther
-                                            .Any(rateFromOther => rateFromEur.To == rateFromOther.To))
-                                    .FirstOrDefault();
-
-                var rateToMach = ratesFromEur
-                                    .Where(rateFromEur => rateFromEur.To == rateFromMatch.To)
-                                    .FirstOrDefault();
-
-                return amount * rateFromMatch.Rate / rateToMach.Rate;
+                foreach (var code in _graph[baseCode])
+                {
+                    // determine if code can be converted to targetCode
+                    decimal rate = ExchangeRate(code, targetCode, rates);
+                    if (rate != 0) // if it can than combine with returned rate
+                        return rate*GetKnownRate(baseCode, code, rates);
+                }
             }
+
+            return 0;
+        }
+        private decimal GetKnownRate(string baseCode, string targetCode, List<RateDto> rates)
+        {
+            //Calculate not knowledge rates
+            for (int i = 0; i < rates.Count; i++)
+            {
+                RateDto rateDto = rates[i];
+                for (int j = i + 1; j < rates.Count; j++)
+                {
+                    RateDto rate2 = rates[j];
+                    RateDto cross = CanCross(rateDto, rate2);
+                    if (cross != null)
+                        if (rates.FirstOrDefault(r => r.From.Equals(cross.From) && r.To.Equals(cross.To)) == null)
+                            rates.Add(cross);
+                }
+            }
+
+            var rate = rates.SingleOrDefault(fr => fr.From == baseCode && fr.To == targetCode);
+            var rate_i = rates.SingleOrDefault(fr => fr.From == targetCode && fr.To == baseCode);
+            
+            if (rate == null)
+            {
+                return 1 / rate_i.Rate;
+            }
+            return rate.Rate;
+        }
+
+        public static RateDto CanCross(RateDto r1, RateDto r2)
+        {
+            RateDto nr = null;
+
+            if (r1.From.Equals(r2.From) && r1.To.Equals(r2.To) ||
+                r1.From.Equals(r2.To) && r1.To.Equals(r2.From)
+                ) return null; // Same with same.
+
+            if (r1.From.Equals(r2.From))
+            { // a/b / a/c = c/b
+                nr = new RateDto()
+                {
+                    From = r2.To,
+                    To = r1.To,
+                    Rate = r1.Rate / r2.Rate
+                };
+            }
+            else if (r1.From.Equals(r2.To))
+            {
+                // a/b * c/a = c/b
+                nr = new RateDto()
+                {
+                    From = r2.From,
+                    To = r1.To,
+                    Rate = r2.Rate * r1.Rate
+                };
+            }
+            else if (r1.To.Equals(r2.To))
+            {
+                // a/c / b/c = a/b
+                nr = new RateDto()
+                {
+                    From = r1.From,
+                    To = r2.From,
+                    Rate = r1.Rate / r2.Rate
+                };
+            }
+            else if (r1.To.Equals(r2.From))
+            {
+                // a/c * c/b = a/b
+                nr = new RateDto()
+                {
+                    From = r1.From,
+                    To = r2.To,
+                    Rate = r1.Rate * r2.Rate
+                };
+            }
+            return nr;
         }
     }
 }

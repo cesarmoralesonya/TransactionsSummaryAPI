@@ -20,5 +20,13 @@
             <response code="404">Not fount transactions</response>
             <response code="500">Internal server error</response>
         </member>
+        <member name="M:PublicApi.Controllers.TransactionsController.GetTransactionsBySku(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get all transactions by Sku
+            </summary>
+            <response code="200">Return a object with a list of transactions by sku and total in EUR</response>
+            <response code="404">Not fount transactions</response>
+            <response code="500">Internal server error</response>
+        </member>
     </members>
 </doc>
