@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IConversionService
+    public interface IRateService
     {
-        Task<IEnumerable<ConversionDto>> GetAllConversionsAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<RateDto>> GetAllratesAsync(CancellationToken cancellationToken = default);
     }
 }

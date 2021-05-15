@@ -2,7 +2,7 @@
 
 namespace Infraestructure.Interfaces
 {
-    public interface IConversionRepository : IAsyncRepository<ConversionEntity>
+    public interface IRateRepository : IAsyncRepository<RateEntity>
     {
     }
 }

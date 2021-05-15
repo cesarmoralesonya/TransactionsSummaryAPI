@@ -7,11 +7,11 @@ namespace Infraestructure.Data
     {
         public static void Initialize(TransSummaryContext context)
         {
-            if (!context.Conversions.Any())
+            if (!context.rates.Any())
             {
-                context.Conversions.AddRange(
-                    new ConversionEntity("EUR", "USD", 1.359),
-                    new ConversionEntity("CAD", "EUR", 0.732)
+                context.rates.AddRange(
+                    new RateEntity("EUR", "USD", 1.359),
+                    new RateEntity("CAD", "EUR", 0.732)
                     );
             }
             if (!context.Transactions.Any())

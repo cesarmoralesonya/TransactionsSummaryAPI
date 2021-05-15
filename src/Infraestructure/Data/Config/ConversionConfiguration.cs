@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infraestructure.Data.Config
 {
-    public class ConversionConfiguration : IEntityTypeConfiguration<ConversionEntity>
+    public class RateConfiguration : IEntityTypeConfiguration<RateEntity>
     {
-        public void Configure(EntityTypeBuilder<ConversionEntity> builder)
+        public void Configure(EntityTypeBuilder<RateEntity> builder)
         {
             builder.HasKey(a => a.Id);
-            builder.ToTable("Conversion");
+            builder.ToTable("rate");
         }
     }
 }

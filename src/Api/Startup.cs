@@ -37,12 +37,12 @@ namespace PublicApi
 
             services.AddDbContext<TransSummaryContext>(op => op.UseInMemoryDatabase("TransactionSummaryDb"));
             services.AddSingleton<ITransactionClient<TransactionModel>, TransactionClient>();
-            services.AddSingleton<IConversionClient<ConversionModel>, ConversionClient>();
+            services.AddSingleton<IrateClient<RateModel>, RateClient>();
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<IConversionRepository, ConversionRepository>();
+            services.AddScoped<IRateRepository, RateRepository>();
             services.AddTransient<ITransactionService, TransactionService>();
-            services.AddTransient<IConversionService, ConversionService>();
+            services.AddTransient<IRateService, RateService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

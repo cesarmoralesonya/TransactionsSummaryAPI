@@ -8,9 +8,9 @@ using Xunit;
 namespace FunctionalTests.PublicApi.Controllers
 {
     [Collection("SequentialGet")]
-    public class ConversionsControllerGet : IClassFixture<WebTestFixture>
+    public class ratesControllerGet : IClassFixture<WebTestFixture>
     {
-        public ConversionsControllerGet(WebTestFixture factory)
+        public ratesControllerGet(WebTestFixture factory)
         {
             Client = factory.CreateClient();
         }
@@ -18,12 +18,12 @@ namespace FunctionalTests.PublicApi.Controllers
         public HttpClient Client { get; }
 
         [Fact]
-        public async Task RetunsListConversions()
+        public async Task RetunsListrates()
         {
-            var response = await Client.GetAsync("/api/conversions");
+            var response = await Client.GetAsync("/api/rates");
             response.EnsureSuccessStatusCode();
             var stringResponde = await response.Content.ReadAsStringAsync();
-            var model = JsonConvert.DeserializeObject<List<ConversionDto>>(stringResponde);
+            var model = JsonConvert.DeserializeObject<List<rateDto>>(stringResponde);
 
             Assert.NotEmpty(model);
         }

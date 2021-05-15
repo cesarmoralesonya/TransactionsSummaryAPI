@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace IntegrationTests.ApiClients.ConversionClient
+namespace IntegrationTests.ApiClients.RateClient
 {
     public class GetAll
     {
-        private readonly Infraestructure.ApiClients.ConversionClient _conversionClient;
+        private readonly Infraestructure.ApiClients.RateClient _rateClient;
 
         private readonly ITestOutputHelper _output;
 
@@ -21,14 +21,14 @@ namespace IntegrationTests.ApiClients.ConversionClient
             var mockFactory = new Mock<IHttpClientFactory>();
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
 
-            _conversionClient = new Infraestructure.ApiClients.ConversionClient(mockFactory.Object);
+            _rateClient = new Infraestructure.ApiClients.RateClient(mockFactory.Object);
         }
 
         [Fact]
         public async Task NotNull()
         {
             //Acts
-            var result = await _conversionClient.GetAll();
+            var result = await _rateClient.GetAll();
 
             //Asserts
             Assert.NotNull(result);

@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace UnitTests.Infraestructure.ApiClients.ConversionClientTests
+namespace UnitTests.Infraestructure.ApiClients.rateClientTests
 {
     public class GetAll
     {
@@ -27,10 +27,10 @@ namespace UnitTests.Infraestructure.ApiClients.ConversionClientTests
             var client = new HttpClient(mockHttpMessageHandler.Object) { BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/") };
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
 
-            var conversionClient = new ConversionClient(mockFactory.Object);
+            var rateClient = new RateClient(mockFactory.Object);
 
             //Act
-            var result = await conversionClient.GetAll();
+            var result = await rateClient.GetAll();
 
             //Assert
             Assert.Null(result);
@@ -50,14 +50,14 @@ namespace UnitTests.Infraestructure.ApiClients.ConversionClientTests
             var client = new HttpClient(mockHttpMessageHandler.Object) { BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/") };
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
 
-            var conversionClient = new ConversionClient(mockFactory.Object);
+            var rateClient = new rateClient(mockFactory.Object);
 
             //Act
-            var result = await conversionClient.GetAll();
+            var result = await rateClient.GetAll();
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsType<List<ConversionModel>>(result);
+            Assert.IsType<List<RateModel>>(result);
         }
     }
 }

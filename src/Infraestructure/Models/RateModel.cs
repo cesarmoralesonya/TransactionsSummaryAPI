@@ -3,7 +3,7 @@ using Infraestructure.Interfaces;
 
 namespace Infraestructure.Models
 {
-    public class ConversionModel : IWebServiceModel
+    public class RateModel : IWebServiceModel
     {
         public string From { get; set; }
 

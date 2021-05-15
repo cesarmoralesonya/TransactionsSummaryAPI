@@ -4,12 +4,12 @@
         <name>PublicApi</name>
     </assembly>
     <members>
-        <member name="M:PublicApi.Controllers.ConversionsController.GetAllConversions(System.Threading.CancellationToken)">
+        <member name="M:PublicApi.Controllers.RatesController.GetAllrates(System.Threading.CancellationToken)">
             <summary>
-            Get all Conversions
+            Get all rates
             </summary>
-            <response code="200">Return a list of conversions</response>
-            <response code="404">Not fount conversions</response>
+            <response code="200">Return a list of rates</response>
+            <response code="404">Not fount rates</response>
             <response code="500">Internal server error</response>
         </member>
         <member name="M:PublicApi.Controllers.TransactionsController.GetAllTransactions(System.Threading.CancellationToken)">

@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos
 {
-    public class ConversionDto
+    public class RateDto
     {
         public string From { get; set; }
 

@@ -9,36 +9,36 @@ using System.Threading.Tasks;
 namespace PublicApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/conversions")]
+    [Route("api/rates")]
     [ApiController]
-    public class ConversionsController : ControllerBase
+    public class RatesController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IConversionService _conversionService;
+        private readonly IRateService _rateService;
 
-        public ConversionsController(IConversionService conversionService, ILogger<ConversionsController> logger)
+        public RatesController(IRateService rateService, ILogger<RatesController> logger)
         {
-            _conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
+            _rateService = rateService ?? throw new ArgumentNullException(nameof(rateService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
-        /// Get all Conversions
+        /// Get all rates
         /// </summary>
-        /// <response code="200">Return a list of conversions</response>
-        /// <response code="404">Not fount conversions</response>
+        /// <response code="200">Return a list of rates</response>
+        /// <response code="404">Not fount rates</response>
         /// <response code="500">Internal server error</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllConversions(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllrates(CancellationToken cancellationToken)
         {
             try
             {
-                var conversions = await _conversionService.GetAllConversionsAsync(cancellationToken);
-                if (conversions == null) return NotFound();
-                return Ok(conversions);
+                var rates = await _rateService.GetAllratesAsync(cancellationToken);
+                if (rates == null) return NotFound();
+                return Ok(rates);
             }
             catch(Exception ex)
             {

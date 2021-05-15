@@ -3,7 +3,7 @@ using System;
 
 namespace Domain.Entities
 {
-    public class ConversionEntity : EntityBase, IAgragateRoot
+    public class RateEntity : EntityBase, IAgragateRoot
     {
         public string From { get; private set; }
 
@@ -11,12 +11,12 @@ namespace Domain.Entities
 
         public double Rate { get; private set; }
 
-        public ConversionEntity()
+        public RateEntity()
         {
             //Required by EF
         }
 
-        public ConversionEntity(string from, string to, double rate)
+        public RateEntity(string from, string to, double rate)
         {
             From = from ?? throw new ArgumentNullException(nameof(from));
             To = to ?? throw new ArgumentNullException(nameof(to));

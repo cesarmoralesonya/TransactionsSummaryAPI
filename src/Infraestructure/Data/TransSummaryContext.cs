@@ -11,12 +11,12 @@ namespace Infraestructure.Data
         {
         }
 
-        public DbSet<ConversionEntity> Conversions { get; set; }
+        public DbSet<RateEntity> rates { get; set; }
         public DbSet<TransactionEntity> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new ConversionConfiguration());
+            builder.ApplyConfiguration(new RateConfiguration());
             builder.ApplyConfiguration(new TransactionConfiguration());
 
         }
