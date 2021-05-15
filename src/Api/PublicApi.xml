@@ -14,7 +14,7 @@
         </member>
         <member name="M:PublicApi.Controllers.TransactionsController.GetAllTransactions(System.Threading.CancellationToken)">
             <summary>
-            Get all Transactions
+            Get all transactions
             </summary>
             <response code="200">Return a list of transactions</response>
             <response code="404">Not fount transactions</response>

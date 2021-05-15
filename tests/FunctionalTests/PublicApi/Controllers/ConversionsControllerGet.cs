@@ -23,7 +23,7 @@ namespace FunctionalTests.PublicApi.Controllers
             var response = await Client.GetAsync("/api/rates");
             response.EnsureSuccessStatusCode();
             var stringResponde = await response.Content.ReadAsStringAsync();
-            var model = JsonConvert.DeserializeObject<List<rateDto>>(stringResponde);
+            var model = JsonConvert.DeserializeObject<List<RateDto>>(stringResponde);
 
             Assert.NotEmpty(model);
         }

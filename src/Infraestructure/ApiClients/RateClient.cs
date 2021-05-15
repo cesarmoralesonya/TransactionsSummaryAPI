@@ -2,6 +2,7 @@
 using Infraestructure.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -30,14 +31,8 @@ namespace Infraestructure.ApiClients
             try
             {
                 var endpoint = _configuration.GetSection("ConfigApp").GetSection("ratesEndpoint").Value;
-                using var result = await GetRequestAsync(endpoint, cancellationToken);
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    Encoder = JavaScriptEncoder.Default,
-                    NumberHandling = JsonNumberHandling.AllowReadingFromString
-                };
-                return await JsonSerializer.DeserializeAsync<IEnumerable<RateModel>>(result, options, cancellationToken);
+                var result = await GetRequestAsync(endpoint, cancellationToken);
+                return JsonConvert.DeserializeObject<IEnumerable<RateModel>>(result);
             }
             catch (Exception ex)
             {

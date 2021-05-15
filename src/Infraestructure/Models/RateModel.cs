@@ -1,16 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Infraestructure.Models
 {
     public class RateModel
     {
-        [JsonPropertyName("from")]
+        [JsonProperty("from")]
         public string From { get; set; }
 
-        [JsonPropertyName("to")]
+        [JsonProperty("to")]
         public string To { get; set; }
 
-        [JsonPropertyName("rate")]
+        [JsonProperty("rate")]
         public double Rate { get; set; }
     }
 }

@@ -1,11 +1,9 @@
-﻿
-using Application.Dtos;
+﻿using Application.Dtos;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Specifications;
 using Infraestructure.Interfaces;
-using Infraestructure.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -47,27 +45,10 @@ namespace Application.Services
             }
             else
             {
-                //await UpdatePersistedTransactions(transactions);
+                var transEntities = _mapper.Map<IEnumerable<TransactionEntity>>(transactions);
+                await _transactionRepository.UpdateBackupAsync(transEntities, cancellationToken);
                 return _mapper.Map<IEnumerable<TransactionDto>>(transactions);
             }
-        }
-
-        public async Task<TransactionsTotalDto> GetTransactionsWithTotal(string sku)
-        {
-            var filterSpec = new TransactionsFilterSpecification(sku);
-            var transPersisFiltered = await _transactionRepository.ListAsync(filterSpec);
-            return new TransactionsTotalDto()
-            {
-                Transactions = _mapper.Map<List<TransactionDto>>(transPersisFiltered),
-                Total = transPersisFiltered.Select(trans => trans.Amount).Sum(),
-            };
-        }
-
-        private async Task UpdatePersistedTransactions(IEnumerable<TransactionModel> transactions, CancellationToken cancellationToken = default)
-        {
-            var transactionEntities = _mapper.Map<IEnumerable<TransactionEntity>>(transactions);
-            await _transactionRepository.DeleteAllAsync(cancellationToken);
-            await _transactionRepository.AddRangeAsync(transactionEntities, cancellationToken);
         }
     }
 }

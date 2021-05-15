@@ -1,16 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Infraestructure.Models
 {
     public class TransactionModel
     {
-        [JsonPropertyName("sku")]
+        [JsonProperty("sku")]
         public string Sku { get; set; }
 
-        [JsonPropertyName("amount")]
+        [JsonProperty("amount")]
         public double Amount { get; set; }
 
-        [JsonPropertyName("currency")]
+        [JsonProperty("currency")]
         public string Currency { get; set; }
     }
 }

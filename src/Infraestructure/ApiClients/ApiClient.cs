@@ -19,19 +19,18 @@ namespace Infraestructure.ApiClients
 
         }
 
-        public virtual async Task<Stream> GetRequestAsync(string url, CancellationToken cancellationToken = default)
+        public async Task<string> GetRequestAsync(string url, CancellationToken cancellationToken = default)
         {
             var clientName = _configuration.GetSection("ConfigApp").GetSection("QuietStoneClient").Value;
             using var client = _httpClientFactory.CreateClient(clientName);
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+            var response = client.GetAsync(url).Result;
             if (!response.IsSuccessStatusCode)
                 throw new ArgumentException($"The path {url} gets the following status code: " + response.StatusCode);
             
-            var stream = await response.Content.ReadAsStreamAsync();
-            if (!stream.CanRead)
-                throw new ArgumentException("It is not possible read the stream");
-            return stream;
+            var content = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrEmpty(content))
+                throw new ArgumentException("Content null or empy");
+            return content;
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Infraestructure.Data.Repositories
 
         public async Task DeleteAllAsync(CancellationToken cancellationToken = default)
         {
-            var entities = await _dbContext.Set<T>().ToListAsync();
+            var entities = await _dbContext.Set<T>().ToListAsync(cancellationToken);
             _dbContext.Set<T>().RemoveRange(entities);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

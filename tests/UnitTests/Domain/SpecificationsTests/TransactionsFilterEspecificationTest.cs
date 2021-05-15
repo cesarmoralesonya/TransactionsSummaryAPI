@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace UnitTests.ApplicationCore.Specifications
+namespace UnitTests.Domain.Specifications
 {
-    public class TransactionsFilterEspecification
+    public class TransactionsFilterEspecificationTest
     {
         [Theory]
         [InlineData("T2006", 2)]

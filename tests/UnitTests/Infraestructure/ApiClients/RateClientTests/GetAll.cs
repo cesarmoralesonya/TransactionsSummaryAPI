@@ -1,5 +1,7 @@
 ﻿using Infraestructure.ApiClients;
 using Infraestructure.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using System;
@@ -10,10 +12,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace UnitTests.Infraestructure.ApiClients.rateClientTests
+namespace UnitTests.Infraestructure.ApiClients.RateClientTests
 {
     public class GetAll
     {
+        private static IConfiguration configuration;
+
+        private static Mock<ILogger<RateClient>> loggerMockClient;
+
+        public GetAll()
+        {
+            string projectPath = AppDomain
+                                        .CurrentDomain
+                                        .BaseDirectory.Split(new String[] { @"bin\" }, StringSplitOptions.None)[0];
+            configuration = new ConfigurationBuilder()
+                                .SetBasePath(projectPath)
+                                .AddJsonFile("appsettings.json")
+                                .Build();
+
+            loggerMockClient = new Mock<ILogger<RateClient>>();
+        }
+
         [Fact]
         public async Task Null()
         {
@@ -27,10 +46,10 @@ namespace UnitTests.Infraestructure.ApiClients.rateClientTests
             var client = new HttpClient(mockHttpMessageHandler.Object) { BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/") };
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
 
-            var rateClient = new RateClient(mockFactory.Object);
+            var rateClient = new RateClient(mockFactory.Object, loggerMockClient.Object, configuration);
 
             //Act
-            var result = await rateClient.GetAll();
+            var result = await rateClient.GetAllAsync();
 
             //Assert
             Assert.Null(result);
@@ -50,10 +69,10 @@ namespace UnitTests.Infraestructure.ApiClients.rateClientTests
             var client = new HttpClient(mockHttpMessageHandler.Object) { BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/") };
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
 
-            var rateClient = new rateClient(mockFactory.Object);
+            var rateClient = new RateClient(mockFactory.Object, loggerMockClient.Object, configuration);
 
             //Act
-            var result = await rateClient.GetAll();
+            var result = await rateClient.GetAllAsync();
 
             //Assert
             Assert.NotNull(result);

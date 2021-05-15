@@ -3,7 +3,6 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Infraestructure.Interfaces;
-using Infraestructure.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -43,16 +42,10 @@ namespace Application.Services
             }
             else
             {
-                await UpdatePersistedrates(rates, cancellationToken);
+                var rateEntities = _mapper.Map<IEnumerable<RateEntity>>(rates);
+                await _rateRepository.UpdateBackupAsync(rateEntities, cancellationToken);
                 return _mapper.Map<IEnumerable<RateDto>>(rates);
             }
-        }
-
-        private async Task UpdatePersistedrates(IEnumerable<RateModel> rates, CancellationToken cancellationToken = default)
-        {
-            var rateEntities = _mapper.Map<IEnumerable<RateEntity>>(rates);
-            await _rateRepository.DeleteAllAsync(cancellationToken);
-            await _rateRepository.AddRangeAsync(rateEntities);
         }
     }
 }

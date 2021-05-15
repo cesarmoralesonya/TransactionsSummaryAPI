@@ -24,7 +24,7 @@ namespace PublicApi.Controllers
 
 
         /// <summary>
-        /// Get all Transactions
+        /// Get all transactions
         /// </summary>
         /// <response code="200">Return a list of transactions</response>
         /// <response code="404">Not fount transactions</response>
@@ -62,8 +62,8 @@ namespace PublicApi.Controllers
         {
             if (string.IsNullOrEmpty(sku))
                 throw new ArgumentNullException($"{nameof(sku)} can not be null or empty");
-            var content = await _transactionService.GetTransactionsWithTotal(sku);
-            return Ok(content);
+            //var content = await _transactionService.GetTransactionsWithTotal(sku);
+            return Ok();
         }
     }
 }
