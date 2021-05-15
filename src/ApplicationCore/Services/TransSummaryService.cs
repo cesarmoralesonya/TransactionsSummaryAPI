@@ -79,9 +79,11 @@ namespace Application.Services
 
                 if (!_rates.Any())
                     throw (new ArgumentException("Imposible do the Exchange because rates is empty"));
+
+                ConstructGraph();
                 foreach (var transaction in transactionsBySkyDto)
                 {
-                    transaction.Amount = ExchangeToEur(transaction.Currency, transaction.Amount);
+                    transaction.Amount = decimal.Round(transaction.Amount * ExchangeRate(transaction.Currency, "EUR"), 2);
                     transaction.Currency = "EUR";
                 }
 
@@ -99,12 +101,6 @@ namespace Application.Services
                     Total = 0
                 };
             }
-        }
-
-        private decimal ExchangeToEur(string currency, decimal amount, CancellationToken cancellationToken = default)
-        {
-            ConstructGraph();
-            return amount * ExchangeRate(currency, "EUR");
         }
 
         private void ConstructGraph()
