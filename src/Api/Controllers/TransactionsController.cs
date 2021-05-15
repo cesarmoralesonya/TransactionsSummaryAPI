@@ -42,13 +42,13 @@ namespace PublicApi.Controllers
                 if (transactions == null) return NotFound();
                 return Ok(transactions);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var menssage = "Error message: " + ex.Message;
 
                 if (ex.InnerException != null)
                 {
-                    menssage +=" Inner exception: " + ex.InnerException.Message;
+                    menssage += " Inner exception: " + ex.InnerException.Message;
                 }
 
                 menssage += " Stack trace: " + ex.StackTrace;

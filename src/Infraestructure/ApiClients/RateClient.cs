@@ -2,18 +2,18 @@
 using Infraestructure.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
 {
-    public class RateClient : BaseHttpClient, IrateClient<RateModel>
+    public class RateClient : ApiClient, IRateClient
     {
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
@@ -30,7 +30,14 @@ namespace Infraestructure.ApiClients
             try
             {
                 var endpoint = _configuration.GetSection("ConfigApp").GetSection("ratesEndpoint").Value;
-                return  await GetRequestAsync<IEnumerable<RateModel>>(endpoint, cancellationToken);
+                using var result = await GetRequestAsync(endpoint, cancellationToken);
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Encoder = JavaScriptEncoder.Default,
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString
+                };
+                return await JsonSerializer.DeserializeAsync<IEnumerable<RateModel>>(result, options, cancellationToken);
             }
             catch (Exception ex)
             {

@@ -16,12 +16,12 @@ namespace Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IRateRepository _rateRepository;
-        private readonly IrateClient<RateModel> _rateClient;
+        private readonly IRateClient _rateClient;
         private readonly ILogger _logger;
 
 
         public RateService(IMapper mapper, IRateRepository rateRepository,
-                                    IrateClient<RateModel> rateClient,
+                                    IRateClient rateClient,
                                     ILogger<RateService> logger)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -52,7 +52,7 @@ namespace Application.Services
         {
             var rateEntities = _mapper.Map<IEnumerable<RateEntity>>(rates);
             await _rateRepository.DeleteAllAsync(cancellationToken);
-            await _rateRepository.AddRangeAsync(rateEntities);            
+            await _rateRepository.AddRangeAsync(rateEntities);
         }
     }
 }

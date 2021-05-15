@@ -40,7 +40,7 @@ namespace PublicApi.Controllers
                 if (rates == null) return NotFound();
                 return Ok(rates);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var menssage = "Error message: " + ex.Message;
 

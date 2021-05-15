@@ -1,12 +1,12 @@
-﻿using Domain.Interfaces;
+﻿using Infraestructure.Models;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infraestructure.Interfaces
 {
-    public interface IrateClient<T> where T : IWebServiceModel
+    public interface IRateClient
     {
-        Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<RateModel>> GetAllAsync(CancellationToken cancellationToken = default);
     }
 }

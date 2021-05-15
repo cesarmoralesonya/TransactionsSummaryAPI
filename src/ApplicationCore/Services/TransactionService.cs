@@ -19,13 +19,13 @@ namespace Application.Services
     {
         private readonly IMapper _mapper;
         private readonly ITransactionRepository _transactionRepository;
-        private readonly ITransactionClient<TransactionModel> _transactionClient;
+        private readonly ITransactionClient _transactionClient;
         private readonly ILogger _logger;
 
 
         public TransactionService(IMapper mapper,
                                     ITransactionRepository transactionRepository,
-                                    ITransactionClient<TransactionModel> transactionClient,
+                                    ITransactionClient transactionClient,
                                     ILogger<TransactionService> logger)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -41,7 +41,7 @@ namespace Application.Services
             {
                 _logger.LogWarning($"Client {nameof(_transactionClient)} unavailable return {nameof(transactions)}");
                 var transPersisted = await _transactionRepository.ListAllAsync(cancellationToken);
-                if(transPersisted == null)
+                if (transPersisted == null)
                     throw new ArgumentException($"{nameof(transPersisted)} is null. Can not return data");
                 return _mapper.Map<IEnumerable<TransactionDto>>(transPersisted);
             }
