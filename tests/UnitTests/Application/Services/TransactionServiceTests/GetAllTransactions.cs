@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using UnitTests.Builder;
 using Xunit;
 
 namespace UnitTests.Application.Services.TransactionServiceTests
@@ -83,7 +84,7 @@ namespace UnitTests.Application.Services.TransactionServiceTests
         public async Task GetAllTransactionsFromApi()
         {
             //Arrange
-            var content = new StringContent("[{ 'sku':'H7277','amount':'18.1','currency':'AUD'},{ 'sku':'E0349','amount':'23.9','currency':'EUR'},{ 'sku':'M0183','amount':'16.0','currency':'CAD'},]");
+            var content = ContentBuilder.TransactionsContent();
             var mockFactory = new Mock<IHttpClientFactory>();
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             mockHttpMessageHandler.Protected()
@@ -106,7 +107,7 @@ namespace UnitTests.Application.Services.TransactionServiceTests
 
             //Asserts
             Assert.NotNull(transactions);
-            Assert.Equal(3, transactions.ToList().Count);
+            Assert.Equal(5, transactions.ToList().Count);
 
         }
 

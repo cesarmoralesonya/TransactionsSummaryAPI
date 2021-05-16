@@ -6,10 +6,12 @@ using Moq;
 using Moq.Protected;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using UnitTests.Builder;
 using Xunit;
 
 namespace UnitTests.Infraestructure.ApiClients.RateClientTests
@@ -56,10 +58,10 @@ namespace UnitTests.Infraestructure.ApiClients.RateClientTests
         }
 
         [Fact]
-        public async Task NotNull_TypeCorrect()
+        public async Task NotNullTypeAndCountCorrect()
         {
             //Arrange
-            var content = new StringContent("[{ 'from': 'EUR', 'to': 'USD', 'rate': '1.359' },{ 'from': 'CAD', 'to': 'EUR', 'rate': '0.732' },]");
+            var content = ContentBuilder.RatesContent();
             var mockFactory = new Mock<IHttpClientFactory>();
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             mockHttpMessageHandler.Protected()
@@ -77,6 +79,7 @@ namespace UnitTests.Infraestructure.ApiClients.RateClientTests
             //Assert
             Assert.NotNull(result);
             Assert.IsType<List<RateModel>>(result);
+            Assert.Equal(4, result.ToList().Count);
         }
     }
 }

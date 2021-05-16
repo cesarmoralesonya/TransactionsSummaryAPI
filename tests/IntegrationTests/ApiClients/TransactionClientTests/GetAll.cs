@@ -12,7 +12,7 @@ namespace IntegrationTests.ApiClients.TransactionClientTests
 {
     public class GetAll
     {
-        private readonly Infraestructure.ApiClients.TransactionClient _rateClient;
+        private readonly TransactionClient _rateClient;
 
         private readonly ITestOutputHelper _output;
 

@@ -5,12 +5,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FunctionalTests.PublicApi.Controllers
+namespace FunctionalTests.PublicApi.ControllersTests
 {
     [Collection("SequentialGet")]
-    public class ratesControllerGet : IClassFixture<WebTestFixture>
+    public class RatesControllerGet : IClassFixture<WebTestFixture>
     {
-        public ratesControllerGet(WebTestFixture factory)
+        public RatesControllerGet(WebTestFixture factory)
         {
             Client = factory.CreateClient();
         }
@@ -18,7 +18,7 @@ namespace FunctionalTests.PublicApi.Controllers
         public HttpClient Client { get; }
 
         [Fact]
-        public async Task RetunsListrates()
+        public async Task RetunsListRates()
         {
             var response = await Client.GetAsync("/api/rates");
             response.EnsureSuccessStatusCode();
