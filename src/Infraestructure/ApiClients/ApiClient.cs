@@ -25,7 +25,7 @@ namespace Infraestructure.ApiClients
             var response = client.GetAsync(url).Result;
             if (!response.IsSuccessStatusCode)
                 throw new ArgumentException($"The path {url} gets the following status code: " + response.StatusCode);
-            
+
             var content = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrEmpty(content))
                 throw new ArgumentException("Content null or empy");

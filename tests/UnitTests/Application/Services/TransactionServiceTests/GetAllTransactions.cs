@@ -67,7 +67,7 @@ namespace UnitTests.Application.Services.TransactionServiceTests
             var client = new HttpClient(mockHttpMessageHandler.Object) { BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/") };
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
 
-            
+
             var transactionClient = new TransactionClient(mockFactory.Object, loggerMockClient.Object, configuration);
             var transactionService = new TransactionService(_mapper, mockRepo.Object, transactionClient, loggerMockService.Object);
 
@@ -89,10 +89,10 @@ namespace UnitTests.Application.Services.TransactionServiceTests
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.Accepted, Content = content });
-            
+
             var client = new HttpClient(mockHttpMessageHandler.Object) { BaseAddress = new Uri("http://quiet-stone-2094.herokuapp.com/") };
             mockFactory.Setup(httpClient => httpClient.CreateClient(It.IsAny<string>())).Returns(client);
-            
+
             var transactionClient = new TransactionClient(mockFactory.Object, loggerMockClient.Object, configuration);
 
             var mockRepo = new Mock<ITransactionRepository>();

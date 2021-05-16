@@ -43,7 +43,7 @@ namespace PublicApi
             services.AddScoped<IRateRepository, RateRepository>();
             //Services
             services.AddTransient<ITransactionService, TransactionService>();
-            services.AddTransient<ITransSummaryService, TransSummaryService>();
+            services.AddScoped<ICurrencyConverterService, CurrencyConverterService>();
             services.AddTransient<IRateService, RateService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -5,10 +5,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,6 +31,22 @@ namespace Infraestructure.ApiClients
                 var endpoint = _configuration.GetSection("ConfigApp").GetSection("TransactionsEndpoint").Value;
                 var result = await GetRequestAsync(endpoint, cancellationToken);
                 return JsonConvert.DeserializeObject<IEnumerable<TransactionModel>>(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return null;
+            }
+        }
+
+        public async virtual Task<IEnumerable<TransactionModel>> GetListAsync(string sku, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var endpoint = _configuration.GetSection("ConfigApp").GetSection("TransactionsEndpoint").Value;
+                var result = await GetRequestAsync(endpoint, cancellationToken);
+                var transactions = JsonConvert.DeserializeObject<IEnumerable<TransactionModel>>(result);
+                return transactions.Where(trans => trans.Sku == sku).ToList();
             }
             catch (Exception ex)
             {

@@ -1,8 +1,10 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,12 +17,14 @@ namespace PublicApi.Controllers
     {
         private readonly ILogger _logger;
         private readonly ITransactionService _transactionService;
-        private readonly ITransSummaryService _transSummaryService;
+        private readonly ICurrencyConverterService _currencyConverterService;
 
-        public TransactionsController(ITransactionService transactionService, ILogger<TransactionsController> logger, ITransSummaryService transSummaryService)
+        public TransactionsController(ITransactionService transactionService,
+                                        ILogger<TransactionsController> logger,
+                                        ICurrencyConverterService currencyConverterService)
         {
             _transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
-            _transSummaryService = transSummaryService ?? throw new ArgumentNullException(nameof(transSummaryService));
+            _currencyConverterService = currencyConverterService ?? throw new ArgumentNullException(nameof(currencyConverterService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -73,9 +77,23 @@ namespace PublicApi.Controllers
 
             try
             {
-                var transactions = await _transSummaryService.GetTransactionsWithTotal(sku, cancellationToken);
-                if (transactions.Total == 0) return NotFound();
-                return Ok(transactions);
+                var transactions = await _transactionService.GetTransactionsBySku(sku, cancellationToken);
+                if (transactions == null) return NotFound();
+
+                await _currencyConverterService.Initialization;
+                foreach (var transaction in transactions)
+                {
+                    transaction.Amount = decimal.Round(transaction.Amount * _currencyConverterService.ExchangeRate(transaction.Currency, "EUR"), 2);
+                    transaction.Currency = "EUR";
+                }
+
+                var result = new TransactionsTotalDto()
+                {
+                    Transactions = transactions,
+                    Total = decimal.Round(transactions.Sum(transaction => transaction.Amount), 2)
+                };
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

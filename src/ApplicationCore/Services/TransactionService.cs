@@ -34,10 +34,10 @@ namespace Application.Services
 
         public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync(CancellationToken cancellationToken = default)
         {
-            var transactions = await _transactionClient.GetAllAsync(cancellationToken);
-            if (transactions == null)
+            var transactionsApi = await _transactionClient.GetAllAsync(cancellationToken);
+            if (transactionsApi == null)
             {
-                _logger.LogWarning($"Client {nameof(_transactionClient)} unavailable return {nameof(transactions)}");
+                _logger.LogWarning($"Client {nameof(_transactionClient)} unavailable return {nameof(transactionsApi)}");
                 var transBackup = await _transactionRepository.ListAllAsync(cancellationToken);
                 if (transBackup == null)
                     throw new ArgumentException($"{nameof(transBackup)} is null. Can not return data");
@@ -45,9 +45,28 @@ namespace Application.Services
             }
             else
             {
-                var transEntities = _mapper.Map<IEnumerable<TransactionEntity>>(transactions);
+                var transEntities = _mapper.Map<IEnumerable<TransactionEntity>>(transactionsApi);
                 await _transactionRepository.UpdateBackupAsync(transEntities, cancellationToken);
-                return _mapper.Map<IEnumerable<TransactionDto>>(transactions);
+                return _mapper.Map<IEnumerable<TransactionDto>>(transactionsApi);
+            }
+        }
+
+        public async Task<IEnumerable<TransactionDto>> GetTransactionsBySku(string sku, CancellationToken cancellationToken = default)
+        {
+            var transactionsBySkuApi = await _transactionClient.GetListAsync(sku, cancellationToken);
+            if (!transactionsBySkuApi.Any())
+            {
+                _logger.LogWarning($"Client {nameof(_transactionClient)} not return a list by sku");
+
+                var filterSpec = new TransactionsFilterSpecification(sku);
+                var transactionsBySkuBackup = await _transactionRepository.ListAsync(filterSpec);
+                if (!transactionsBySkuBackup.Any()) return null;
+
+                return _mapper.Map<List<TransactionDto>>(transactionsBySkuBackup);
+            }
+            else
+            {
+                return _mapper.Map<List<TransactionDto>>(transactionsBySkuApi);
             }
         }
     }

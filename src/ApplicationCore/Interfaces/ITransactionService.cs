@@ -8,5 +8,6 @@ namespace Application.Interfaces
     public interface ITransactionService
     {
         Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<TransactionDto>> GetTransactionsBySku(string sku, CancellationToken cancellationToken = default);
     }
 }

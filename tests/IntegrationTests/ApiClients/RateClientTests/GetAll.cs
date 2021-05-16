@@ -15,7 +15,7 @@ namespace IntegrationTests.ApiClients.RateClientTests
         private readonly RateClient _rateClient;
 
         private readonly ITestOutputHelper _output;
-        
+
         private static IConfiguration configuration;
 
         private static Mock<ILogger<RateClient>> loggerMockClient;
