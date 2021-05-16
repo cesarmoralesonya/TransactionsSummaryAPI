@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="PublicApi\**" />
-    <EmbeddedResource Remove="PublicApi\**" />
-    <None Remove="PublicApi\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="appsettings.json" />
   </ItemGroup>
 

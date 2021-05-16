@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
-        public async Task<IActionResult> GetAllTransactions(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllTransactions(CancellationToken cancellationToken = default)
         {
             try
             {
@@ -70,11 +71,8 @@ namespace PublicApi.Controllers
         /// <response code="404">Not fount transactions</response>
         /// <response code="500">Internal server error</response>
         [HttpGet("total-with-transactions")]
-        public async Task<IActionResult> GetTransactionsBySku([FromQuery] string sku, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetTransactionsBySku([FromQuery][Required] string sku, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(sku))
-                throw new ArgumentNullException($"{nameof(sku)} can not be null or empty");
-
             try
             {
                 var transactions = await _transactionService.GetTransactionsBySku(sku, cancellationToken);
