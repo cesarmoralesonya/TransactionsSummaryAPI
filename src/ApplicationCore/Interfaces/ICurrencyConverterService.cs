@@ -2,9 +2,8 @@
 
 namespace Application.Interfaces
 {
-    public interface ICurrencyConverterService
+    public interface ICurrencyConverterService : IAsyncInitialization
     {
-        public Task Initialization { get; }
         public decimal ExchangeRate(string baseCode, string targetCode);
     }
 }
