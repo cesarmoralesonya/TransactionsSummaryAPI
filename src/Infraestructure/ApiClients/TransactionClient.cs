@@ -21,7 +21,7 @@ namespace Infraestructure.ApiClients
                                     IConfiguration config) : base(httpClientFactory, config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _configuration = config;
+            _configuration = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public async Task<IEnumerable<TransactionModel>> GetAllAsync(CancellationToken cancellationToken = default)

@@ -15,7 +15,7 @@ namespace Infraestructure.ApiClients
         public ApiClient(IHttpClientFactory httpClientFactory, IConfiguration config)
         {
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _configuration = config;
+            _configuration = config ?? throw new ArgumentNullException(nameof(config));
 
         }
 
