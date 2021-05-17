@@ -23,7 +23,7 @@ namespace Infraestructure.ApiClients
             _configuration = config;
         }
 
-        public async virtual Task<IEnumerable<RateModel>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<RateModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {

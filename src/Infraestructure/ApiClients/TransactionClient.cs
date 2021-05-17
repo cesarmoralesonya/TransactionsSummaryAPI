@@ -24,7 +24,7 @@ namespace Infraestructure.ApiClients
             _configuration = config;
         }
 
-        public async virtual Task<IEnumerable<TransactionModel>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TransactionModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Infraestructure.ApiClients
             }
         }
 
-        public async virtual Task<IEnumerable<TransactionModel>> GetListAsync(string sku, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TransactionModel>> GetListAsync(string sku, CancellationToken cancellationToken)
         {
             try
             {

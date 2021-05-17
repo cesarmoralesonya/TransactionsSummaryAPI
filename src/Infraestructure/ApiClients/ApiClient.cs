@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Infraestructure.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Net.Http;
 using System.Threading;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.ApiClients
 {
-    public class ApiClient
+    public class ApiClient : IAsyncApiClient<string>
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
