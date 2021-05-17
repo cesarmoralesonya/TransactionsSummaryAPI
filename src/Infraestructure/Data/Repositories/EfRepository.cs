@@ -14,7 +14,7 @@ namespace Infraestructure.Data.Repositories
 {
     public class EfRepository<T> : IAsyncRepository<T> where T : EntityBase, IAgragateRoot
     {
-        protected TransSummaryContext _dbContext;
+        private TransSummaryContext _dbContext;
 
         public EfRepository(TransSummaryContext dbcontext)
         {
