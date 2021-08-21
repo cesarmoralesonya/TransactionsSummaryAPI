@@ -44,8 +44,8 @@ jobs:
         shell: powershell
         run: |
           
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cesarmoralesonya_TransactionsSummaryAPI" /o:"moralescorp" /d:sonar.cs.opencover.reportsPaths="**\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Test**" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cesarmoralesonya_TransactionsSummaryAPI" /o:"moralescorp" /d:sonar.cs.opencover.reportsPaths="**\coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="**\*.trx" /d:sonar.coverage.exclusions="**Test**" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build "${{env.SOLUTION_PATH}}"
-          dotnet test "${{env.SOLUTION_PATH}}" /p:CollectCoverage=true /p:CoverletOutputFormat=OpenCover
+          dotnet test "${{env.SOLUTION_PATH}}" /p:CollectCoverage=true /p:CoverletOutputFormat=OpenCover --logger trx
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet clean "${{env.SOLUTION_PATH}}"
