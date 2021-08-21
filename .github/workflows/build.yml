@@ -44,6 +44,6 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"cesarmoralesonya_TransactionsSummaryAPI" /o:"moralescorp" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build "{{env.PROJECT_PATH}}"
+          dotnet build "${{env.PROJECT_PATH}}"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-          dotnet clean "{{env.PROJECT_PATH}}"
+          dotnet clean "${{env.PROJECT_PATH}}"
