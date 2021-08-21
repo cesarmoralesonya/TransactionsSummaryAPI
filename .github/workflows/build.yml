@@ -47,6 +47,6 @@ jobs:
           
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"cesarmoralesonya_TransactionsSummaryAPI" /o:"moralescorp" /d:sonar.cs.vscoveragexml.reportsPaths="*.coveragexml" /d:sonar.coverage.exclusions="**Test**" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build "${{env.PROJECT_PATH}}"
-          dotnet test "${{env.SOLUTION_PATH}}" /p:CollectCoverage=true --collect "Code Coverage"
+          dotnet test "${{env.SOLUTION_PATH}}" --collect "Code Coverage"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet clean "${{env.PROJECT_PATH}}"
