@@ -49,8 +49,6 @@ Generated\ Files/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
-# Coverlet
-*.opencover.xml
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
