@@ -36,23 +36,16 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Install SonarCloud ReportGenerator
-        shell: powershell
-        run: |
-          dotnet tool update --global dotnet-reportgenerator-globaltool
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          PROJECT_PATH: src/Api/PublicApi.csproj
           SOLUTION_PATH: TransactionsSummaryApi.sln
         shell: powershell
         run: |
           
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cesarmoralesonya_TransactionsSummaryAPI" /o:"moralescorp" /d:sonar.cs.vscoveragexml.reportsPaths=".\**\*.opencover.xml" /d:sonar.coverage.exclusions="**Test**" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build "${{env.PROJECT_PATH}}"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"cesarmoralesonya_TransactionsSummaryAPI" /o:"moralescorp" /d:sonar.cs.opencover.reportsPaths="**\coverage.opencover.xml" /d:sonar.coverage.exclusions="**Test**" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build "${{env.SOLUTION_PATH}}"
           dotnet test "${{env.SOLUTION_PATH}}" /p:CollectCoverage=true /p:CoverletOutputFormat=OpenCover
-          reportgenerator -reports:".\**\*.opencover.xml" -targetdir:./TestResults/Reports/ -reportTypes:"HTML;HTMLInline;Cobertura"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-          .\TestResults\reports\index.htm
-          dotnet clean "${{env.PROJECT_PATH}}"
+          dotnet clean "${{env.SOLUTION_PATH}}"
