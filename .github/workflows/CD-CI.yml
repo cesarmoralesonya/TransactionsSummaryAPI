@@ -50,6 +50,8 @@ jobs:
           dotnet clean "${{env.SOLUTION_PATH}}"
   docker:
     name: Docker build and push
+    needs: [build]
+    if: success()
     runs-on: ubuntu-latest
     steps:
         - name: Get current date
