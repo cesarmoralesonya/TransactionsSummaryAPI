@@ -28,6 +28,6 @@ jobs:
         - name: Build and push
           uses: docker/build-push-action@v2
           with:
-            context: .
+            context: ./src/Api/
             push: true
             tags: transactionsapi:latest-${{ steps.date.outputs.date }}
