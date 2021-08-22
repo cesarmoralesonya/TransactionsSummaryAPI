@@ -30,4 +30,4 @@ jobs:
           with:
             file: ./src/Api/Dockerfile
             push: true
-            tags: transactionsapi:latest-${{ steps.date.outputs.date }}
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/transactionsapi:latest-${{ steps.date.outputs.date }}
