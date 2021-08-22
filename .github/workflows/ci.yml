@@ -9,7 +9,7 @@ on:
 jobs:
   docker:
     name: Docker build and push
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
         - name: Get current date
           id: date
@@ -28,6 +28,6 @@ jobs:
         - name: Build and push
           uses: docker/build-push-action@v2
           with:
-            context: ./src/Api/
+            file: .\src\Api\Dockerfile
             push: true
             tags: transactionsapi:latest-${{ steps.date.outputs.date }}
