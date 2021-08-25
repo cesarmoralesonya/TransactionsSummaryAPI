@@ -73,4 +73,22 @@ jobs:
           with:
             file: ./src/Api/Dockerfile
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/transactionsapi:latest-${{ steps.date.outputs.date }}
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/transactionsapi:latest-${{ steps.date.outputs.date }}${{ github.run_number }}
+  deploy:
+        name: Deploy to Azure
+        needs: [docker]
+        if: success()
+        runs-on: ubuntu-latest
+        steps:
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: transactions-summaryapi
+            image: ${{ secrets.DOCKERHUB_USERNAME }}/transactionsapi:latest-${{ steps.date.outputs.date }}${{ github.run_number }}
+            name: transactions-summaryapi
+            location: 'west us'
