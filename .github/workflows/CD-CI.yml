@@ -80,6 +80,9 @@ jobs:
         if: success()
         runs-on: ubuntu-latest
         steps:
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y%m%d')"
         - name: 'Login via Azure CLI'
           uses: azure/login@v1
           with:
