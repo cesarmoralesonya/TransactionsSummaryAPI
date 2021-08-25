@@ -1,0 +1,19 @@
+on: [push]
+name: Linux_Container_Workflow
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+            image: cesarmoralesonya/transactionsapi:latest-20210822
+            name: transactions-summaryapi
+            location: 'west us'
