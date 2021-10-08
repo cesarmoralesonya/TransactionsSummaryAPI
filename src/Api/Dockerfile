@@ -8,7 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
 COPY ["src/Api/PublicApi.csproj", "src/Api/"]
-COPY ["src/Api/PublicApi.xml", "src/Api/"]
 COPY ["src/ApplicationCore/Application.csproj", "src/ApplicationCore/"]
 COPY ["src/Infraestructure/Infraestructure.csproj", "src/Infraestructure/"]
 COPY ["src/Domain/Domain.csproj", "src/Domain/"]
@@ -23,4 +22,5 @@ RUN dotnet publish "PublicApi.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY src/Api/PublicApi.xml .
 ENTRYPOINT ["dotnet", "PublicApi.dll"]
