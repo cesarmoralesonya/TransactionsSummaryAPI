@@ -1,8 +1,7 @@
-name: CI
+name: Continuous Integration
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Build & analyze
@@ -49,50 +48,3 @@ jobs:
           dotnet test "${{env.SOLUTION_PATH}}" /p:CollectCoverage=true /p:CoverletOutputFormat=OpenCover --logger trx
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet clean "${{env.SOLUTION_PATH}}"
-  docker:
-    name: Docker build and push
-    needs: [build]
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
-        - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y%m%d')"
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: Set up QEMU
-          uses: docker/setup-qemu-action@v1
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v1
-        - name: Login to DockerHub
-          uses: docker/login-action@v1
-          with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_TOKEN }}
-        - name: Build and push
-          uses: docker/build-push-action@v2
-          with:
-            file: ./src/Api/Dockerfile
-            push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/transactionsapi:latest-${{ steps.date.outputs.date }}${{ github.run_number }}
-  deploy:
-        name: Deploy to Azure
-        needs: [docker]
-        if: success()
-        runs-on: ubuntu-latest
-        steps:
-        - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y%m%d')"
-        - name: 'Login via Azure CLI'
-          uses: azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
-        - name: 'Deploy to Azure Container Instances'
-          uses: 'azure/aci-deploy@v1'
-          with:
-            resource-group: ${{ secrets.RESOURCE_GROUP }}
-            dns-name-label: transactions-summaryapi
-            image: ${{ secrets.DOCKERHUB_USERNAME }}/transactionsapi:latest-${{ steps.date.outputs.date }}${{ github.run_number }}
-            name: transactions-summaryapi
-            location: 'west us'
